@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		98DF8310137BCF0C00E0BB30 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98DF830F137BCF0C00E0BB30 /* main.cpp */; };
+		98DF831A137BCF3D00E0BB30 /* graph_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98DF8317137BCF3D00E0BB30 /* graph_main.cpp */; };
+		98DF831B137BCF3D00E0BB30 /* graph.C in Sources */ = {isa = PBXBuildFile; fileRef = 98DF8318137BCF3D00E0BB30 /* graph.C */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,9 +24,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		98BD525F137D45EE00317403 /* pref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pref.h; sourceTree = "<group>"; };
 		98DF830B137BCF0C00E0BB30 /* root_graph */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = root_graph; sourceTree = BUILT_PRODUCTS_DIR; };
-		98DF830F137BCF0C00E0BB30 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		98DF8311137BCF0C00E0BB30 /* root_graph.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = root_graph.1; sourceTree = "<group>"; };
+		98DF8317137BCF3D00E0BB30 /* graph_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph_main.cpp; sourceTree = "<group>"; };
+		98DF8318137BCF3D00E0BB30 /* graph.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.C; sourceTree = "<group>"; };
+		98DF8319137BCF3D00E0BB30 /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +46,7 @@
 		98DF8300137BCF0B00E0BB30 = {
 			isa = PBXGroup;
 			children = (
+				98BD525F137D45EE00317403 /* pref.h */,
 				98DF830E137BCF0C00E0BB30 /* root_graph */,
 				98DF830C137BCF0C00E0BB30 /* Products */,
 			);
@@ -58,7 +63,9 @@
 		98DF830E137BCF0C00E0BB30 /* root_graph */ = {
 			isa = PBXGroup;
 			children = (
-				98DF830F137BCF0C00E0BB30 /* main.cpp */,
+				98DF8317137BCF3D00E0BB30 /* graph_main.cpp */,
+				98DF8318137BCF3D00E0BB30 /* graph.C */,
+				98DF8319137BCF3D00E0BB30 /* graph.h */,
 				98DF8311137BCF0C00E0BB30 /* root_graph.1 */,
 			);
 			path = root_graph;
@@ -114,7 +121,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98DF8310137BCF0C00E0BB30 /* main.cpp in Sources */,
+				98DF831A137BCF3D00E0BB30 /* graph_main.cpp in Sources */,
+				98DF831B137BCF3D00E0BB30 /* graph.C in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,17 +132,26 @@
 		98DF8312137BCF0C00E0BB30 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEAD_CODE_STRIPPING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = pref.h;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_STRICT_ALIASING = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -142,13 +159,23 @@
 		98DF8313137BCF0C00E0BB30 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEAD_CODE_STRIPPING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = pref.h;
+				GCC_STRICT_ALIASING = YES;
+				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -156,22 +183,96 @@
 		98DF8315137BCF0C00E0BB30 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				LIBRARY_SEARCH_PATHS = /Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib;
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
+					"$(OTHER_CFLAGS)",
+					"-D_REENTRANT",
+					"-pthread",
+					"-m64",
+					"-I/Users/wutzis_spam/root/root/include",
+				);
+				OTHER_LDFLAGS = (
+					"-lSpectrum",
+					"-L/Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib/",
+					"-lboost_filesystem",
+					"-lboost_system",
+					"-L/Users/wutzis_spam/root/root/lib",
+					"-lGpad",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lRIO",
+					"-lNet",
+					"-lThread",
+					"-lCore",
+					"-lCint",
+					"-pthread",
+					"-Wl,-rpath,/Users/wutzis_spam/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
+				USER_HEADER_SEARCH_PATHS = /Users/wutzis_spam/Downloads/boost_1_46_1/;
 			};
 			name = Debug;
 		};
 		98DF8316137BCF0C00E0BB30 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				LIBRARY_SEARCH_PATHS = /Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib;
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
+					"$(OTHER_CFLAGS)",
+					"-D_REENTRANT",
+					"-pthread",
+					"-m64",
+					"-I/Users/wutzis_spam/root/root/include",
+				);
+				OTHER_LDFLAGS = (
+					"-lSpectrum",
+					"-L/Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib/",
+					"-lboost_filesystem",
+					"-lboost_system",
+					"-L/Users/wutzis_spam/root/root/lib",
+					"-lGpad",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lRIO",
+					"-lNet",
+					"-lThread",
+					"-lCore",
+					"-lCint",
+					"-pthread",
+					"-Wl,-rpath,/Users/wutzis_spam/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
+				USER_HEADER_SEARCH_PATHS = /Users/wutzis_spam/Downloads/boost_1_46_1/;
 			};
 			name = Release;
 		};
@@ -194,6 +295,7 @@
 				98DF8316137BCF0C00E0BB30 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
