@@ -36,7 +36,7 @@ int main(int argc , char* argv[]){
 		//Setting up canvas for plot of all sectrums (is it called spectrums? ;) )
 	TCanvas *c1 = new TCanvas("All Plots","All Plots",10,10,3000,1500);
 	TH1F *integral_hist = new TH1F("integral", "integral", 100, 0, 100);
-	if(!(argc %ROWS)){
+	if(!(argc % ROWS)){
 		c1->Divide(argc/ROWS,ROWS);
 	}else{
 		c1->Divide(argc/ROWS+(argc %ROWS),ROWS);

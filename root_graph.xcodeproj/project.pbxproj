@@ -24,7 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		98BD525F137D45EE00317403 /* pref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pref.h; sourceTree = "<group>"; };
+		98BD525F137D45EE00317403 /* pref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pref.h; path = ../pref.h; sourceTree = "<group>"; };
 		98DF830B137BCF0C00E0BB30 /* root_graph */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = root_graph; sourceTree = BUILT_PRODUCTS_DIR; };
 		98DF8311137BCF0C00E0BB30 /* root_graph.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = root_graph.1; sourceTree = "<group>"; };
 		98DF8317137BCF3D00E0BB30 /* graph_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph_main.cpp; sourceTree = "<group>"; };
@@ -43,10 +43,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		98DF8300137BCF0B00E0BB30 = {
+		98BD5262137D4BC300317403 /* Header */ = {
 			isa = PBXGroup;
 			children = (
 				98BD525F137D45EE00317403 /* pref.h */,
+				98DF8319137BCF3D00E0BB30 /* graph.h */,
+			);
+			name = Header;
+			sourceTree = "<group>";
+		};
+		98DF8300137BCF0B00E0BB30 = {
+			isa = PBXGroup;
+			children = (
 				98DF830E137BCF0C00E0BB30 /* root_graph */,
 				98DF830C137BCF0C00E0BB30 /* Products */,
 			);
@@ -63,9 +71,9 @@
 		98DF830E137BCF0C00E0BB30 /* root_graph */ = {
 			isa = PBXGroup;
 			children = (
+				98BD5262137D4BC300317403 /* Header */,
 				98DF8317137BCF3D00E0BB30 /* graph_main.cpp */,
 				98DF8318137BCF3D00E0BB30 /* graph.C */,
-				98DF8319137BCF3D00E0BB30 /* graph.h */,
 				98DF8311137BCF0C00E0BB30 /* root_graph.1 */,
 			);
 			path = root_graph;
@@ -146,6 +154,10 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -153,6 +165,8 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
+				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
 		};
@@ -171,12 +185,18 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = macosx;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
+				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Release;
 		};

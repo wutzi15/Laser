@@ -18,8 +18,6 @@ Double_t fpeaks(Double_t *x, Double_t *par) {
 
 
 void graph(std::string name, bool big){
-		// AtlasStyle();
-		// TApplication *app = new TApplication("b",&b,a);
 	Float_t x[5001],y[5001];
 	std::ifstream in;
 	TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,500);
@@ -30,19 +28,17 @@ void graph(std::string name, bool big){
 			in >> x[i] >> y[i];
 		} 
 		
-			//c1->Divide(1,2);
+			
 		c1->cd(1);
 		TGraph *gr = new TGraph(5001,x,y);
 		gr->SetMinimum(-60.);
-			//gr->GetYAxis()->SetMinimum(-70.);
-			// gr->GetYAxis()->SetTitle("dB");
 		gr->Draw("A*");
 		TH1F *h = gr->GetHistogram();
 		for(Int_t i = 0 ; i< 5001 ;i++){
 			if(y[i]>= -60.)
 				h->SetBinContent(i,y[i]);
 		}
-			//c1->cd(2);
+
 		h->SetYTitle("Intensity in dB");
 		h->SetXTitle("#lambda in nm");
 		h->SetTitle("Sectrum");
@@ -57,7 +53,7 @@ void graph(std::string name, bool big){
 		Double_t par[3000];
 		TF1 *fline = new TF1("fline","pol1",842,852);
 		h->Fit("fline","qn");
-			//c1->cd(2);
+
 		par[0] = fline->GetParameter(0);
 		par[1] = fline->GetParameter(1);
 			//loop on all found peaks. Eliminate peaks at the background level
@@ -74,7 +70,6 @@ void graph(std::string name, bool big){
 		}
 		c1->Update();
 		
-			//gSystem->ProcessEvents();
 		TImage *img = TImage::Create();
 		
 		img->FromPad(c1);
@@ -85,7 +80,6 @@ void graph(std::string name, bool big){
 		std::string stringtmp = path.parent_path().string() +"/"+path.stem().string()+".png" ;
 		std::cout <<"\n \n stem \n \n"<<stringtmp<< '\t' << path.stem().string() << std::endl;
 		img->WriteImage(stringtmp.c_str());
-			//app->Run();
 		return;
 	} 
 	TGraph2D *g = new TGraph2D("tmp.dat");
