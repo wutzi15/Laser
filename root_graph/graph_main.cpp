@@ -193,10 +193,10 @@ int main(int argc , char* argv[]){
 			integral_hist->Fill(calced_asy);
 			asymmety_ary[i] = calced_asy;
 			std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
-			TText *text = new TText(0.5,0.5 , asy_text.c_str());
+			/*TText *text = new TText(0.5,0.5 , asy_text.c_str());
 			text->SetTextSize(0.35);
 			text->Draw();
-		
+		*/
 			integral_hist->Fill(calced_asy);
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
 			
