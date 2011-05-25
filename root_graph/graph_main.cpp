@@ -48,7 +48,7 @@ int main(int argc , char* argv[]){
 		//delete argv[1];
 		//delete argv[2];
 	std::cout << startwl << '\t' << stopwl << std::endl;
-	//argc -= NUM_ARGS;
+		//argc -= NUM_ARGS;
 	Double_t max = -210;
 	Double_t maxwl = 0;
 	int _argc = argc;
@@ -56,13 +56,13 @@ int main(int argc , char* argv[]){
 	std::cout << "Running with boost" <<std::endl;
 	std::vector<double> _x,_y;
 	Double_t x[LINES], y[LINES], _inta[LINES], _intb[LINES]; //, cmp_int[argc],argc_ary [argc],cmp_int_root[argc];
-
+	
 	Double_t *cmp_int = new Double_t[argc];
 	Double_t *argc_ary = new Double_t[argc];
 	Double_t *cmp_int_root = new Double_t[argc];
 	Double_t *asymmety_ary = new Double_t[argc];
 	Double_t *width_ary = new Double_t [argc];
-
+	
 	std::ofstream of;
 	std::ofstream integral_of;
 	integral_of.open("integral.txt");
@@ -74,7 +74,7 @@ int main(int argc , char* argv[]){
 	std::cout << argc%ROWS<< std::endl;
 	if(!(argc % ROWS)){
 		c1->Divide(argc/ROWS,ROWS);
-
+		
 	}else{
 		c1->Divide(argc/ROWS+(argc %ROWS -1),ROWS);
 	}
@@ -155,7 +155,7 @@ int main(int argc , char* argv[]){
 			cmp_int_root[i] = r_integral->Integral();
 				//Filling TGraph2D
 			for(Int_t j = 0; j <LINES ; j++){
-				//max = (y[j] > max) ? y[j] : max;
+					//max = (y[j] > max) ? y[j] : max;
 				if (y[j] > max){
 					max = y[j];
 					maxwl = x[j];
@@ -183,9 +183,9 @@ int main(int argc , char* argv[]){
 			TImage *img = TImage::Create();
 			img->FromPad(c1);
 			img->WriteImage("all.png");
-
-
-			//Calculating asymmetry
+			
+			
+				//Calculating asymmetry
 			std::cout << "maximum: " << max << std::endl;
 			double leftlimit, rightlimit = 1;
 				//std::cout << "before for\n";
@@ -198,9 +198,9 @@ int main(int argc , char* argv[]){
 			asymmety_ary[i-3] = calced_asy;
 			std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
 			/*TText *text = new TText(0.5,0.5 , asy_text.c_str());
-			text->SetTextSize(0.35);
-			text->Draw();
-		*/
+			 text->SetTextSize(0.35);
+			 text->Draw();
+			 */
 			integral_hist->Fill(calced_asy);
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
 			
@@ -272,7 +272,7 @@ int main(int argc , char* argv[]){
 	d->Print("3d.gif++");
 		//Saving image
 	TImage *img = TImage::Create();
-	boost::filesystem::path p(t->Argv(1));
+	boost::filesystem::path p(t->Argv(3));
 	std::string file = p.parent_path().string();
 	file += "big.png";
 	img->FromPad(d);
@@ -290,10 +290,9 @@ int main(int argc , char* argv[]){
 	asy_plot->Draw("A*");
 	e->Update();
 	e->cd(2);
-		// Double_t *width_cpy = new Double_t[argc];
+		
 	
 	TGraph *center_plot = new TGraph(argc-1 , argc_ary, width_ary);
-		//std::cout << "removing poinwidth_plotlassdef->SetTitle("Centwidth_plotr");
 	center_plot->GetHistogram()->GetXaxis()->SetTitle("# Meassurement");
 	center_plot->GetHistogram()->GetYaxis()->SetTitle("Center in nm");
 	center_plot->GetHistogram()->GetYaxis()->SetRangeUser(startwl, stopwl);
@@ -301,9 +300,24 @@ int main(int argc , char* argv[]){
 	center_plot->Draw("A*");
 	e->Update();
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
+	TImage *secimg = TImage::Create();
+	boost::filesystem::path p2(t->Argv(3));
+	file = p2.parent_path().string();
+	file += "asy_cent.png";
+	secimg->FromPad(e);
+	secimg->WriteImage(file.c_str());
+	
+	TImage *thrdimg = TImage::Create();
+	boost::filesystem::path p3(t->Argv(3));
+	file = p3.parent_path().string();
+	file += "allplots.png";
+	thrdimg->FromPad(c1);
+	thrdimg->WriteImage(file.c_str());
+	
+	
 	t->Run();
 	
-
+	
 	delete[] cmp_int;
 	delete[] argc_ary; 
 	delete[] cmp_int_root;
