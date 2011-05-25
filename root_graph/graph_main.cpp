@@ -300,6 +300,7 @@ int main(int argc , char* argv[]){
 	center_plot->Draw("A*");
 	e->Update();
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
+		//Saving Images
 	TImage *secimg = TImage::Create();
 	boost::filesystem::path p2(t->Argv(3));
 	file = p2.parent_path().string();
