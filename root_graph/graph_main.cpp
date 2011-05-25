@@ -28,7 +28,7 @@ int main(int argc , char* argv[]){
 		//delete argv[1];
 		//delete argv[2];
 	std::cout << startwl << '\t' << stopwl << std::endl;
-	argc -= NUM_ARGS;
+	//argc -= NUM_ARGS;
 	Double_t max = -210;
 	int _argc = argc;
 	TApplication *t = new TApplication("big",&_argc,argv);
