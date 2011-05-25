@@ -61,6 +61,7 @@ int main(int argc , char* argv[]){
 	Double_t *argc_ary = new Double_t[argc];
 	Double_t *cmp_int_root = new Double_t[argc];
 	Double_t *asymmety_ary = new Double_t[argc];
+	Double_t *width_ary = new Double_t [argc];
 
 	std::ofstream of;
 	std::ofstream integral_of;
@@ -70,10 +71,12 @@ int main(int argc , char* argv[]){
 	TCanvas *c1 = new TCanvas("All Plots","All Plots",10,10,3000,1500);
 	TH1F *integral_hist = new TH1F("Asymmerty", "Asymmetry", 100, 0.9, 1.1);
 	
+	std::cout << argc%ROWS<< std::endl;
 	if(!(argc % ROWS)){
 		c1->Divide(argc/ROWS,ROWS);
+
 	}else{
-		c1->Divide(argc/ROWS+(argc %ROWS),ROWS);
+		c1->Divide(argc/ROWS+(argc %ROWS -1),ROWS);
 	}
 	
 	of.open("tmp.dat");
@@ -188,10 +191,11 @@ int main(int argc , char* argv[]){
 				//std::cout << "before for\n";
 			leftlimit = findlower(x,y, max);
 			rightlimit = findupper(x,y, max);
+			width_ary[i] = (leftlimit +rightlimit)/2;
 				//std::cout <<"leftlimit "<< leftlimit <<'\t' <<"rightlimit "<< rightlimit << std::endl;
 			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
 			integral_hist->Fill(calced_asy);
-			asymmety_ary[i] = calced_asy;
+			asymmety_ary[i-3] = calced_asy;
 			std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
 			/*TText *text = new TText(0.5,0.5 , asy_text.c_str());
 			text->SetTextSize(0.35);
@@ -276,9 +280,25 @@ int main(int argc , char* argv[]){
 		//cleaning
 	boost::filesystem::remove(boost::filesystem::path("tmp.dat"));
 	TCanvas *e = new TCanvas("Asymmetry","Asymmetry",10,10,1500,800);
+	e->Divide(2,1);
 	TGraph *asy_plot = new TGraph(argc-1, argc_ary, asymmety_ary);
 	e->cd(1);
+	asy_plot->SetTitle("Asymmetry");
+	asy_plot->GetHistogram()->GetXaxis()->SetTitle("# Meassurement");
+	asy_plot->GetHistogram()->GetYaxis()->SetTitle("Asymmetry");
+	asy_plot->GetHistogram()->GetXaxis()->SetRange(1, argc);
 	asy_plot->Draw("A*");
+	e->Update();
+	e->cd(2);
+		// Double_t *width_cpy = new Double_t[argc];
+	
+	TGraph *center_plot = new TGraph(argc-1 , argc_ary, width_ary);
+		//std::cout << "removing poinwidth_plotlassdef->SetTitle("Centwidth_plotr");
+	center_plot->GetHistogram()->GetXaxis()->SetTitle("# Meassurement");
+	center_plot->GetHistogram()->GetYaxis()->SetTitle("Center in nm");
+	center_plot->GetHistogram()->GetYaxis()->SetRangeUser(startwl, stopwl);
+	center_plot->SetTitle("Center");
+	center_plot->Draw("A*");
 	e->Update();
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
 	t->Run();
@@ -287,6 +307,7 @@ int main(int argc , char* argv[]){
 	delete[] cmp_int;
 	delete[] argc_ary; 
 	delete[] cmp_int_root;
-
+	delete[] asymmety_ary;
+	delete [] width_ary;
 	return 0;
 }
