@@ -1,3 +1,4 @@
+#include "pref.h"
 #include "graph.h"
 TH2F *big;
 
