@@ -29,7 +29,7 @@ int main(int argc , char* argv[]){
 		//delete argv[2];
 	std::cout << startwl << '\t' << stopwl << std::endl;
 	//argc -= NUM_ARGS;
-	Double_t max = -210;
+	Double_t max,maxwl = -210;
 	int _argc = argc;
 	TApplication *t = new TApplication("big",&_argc,argv);
 	std::cout << "Running with boost" <<std::endl;
@@ -119,7 +119,7 @@ int main(int argc , char* argv[]){
 			
 			std::cout << "Simpson integral: " <<s_integral <<std::endl;
 			integral_of << i << '\t' << s_integral << std::endl;
-			integral_hist->Fill(s_integral);
+			//integral_hist->Fill(s_integral);
 			cmp_int[i] = s_integral;
 			Int_t lines = (Int_t)intb.size();
 			TGraph *r_integral = new TGraph(lines, _inta, _intb);
@@ -128,7 +128,11 @@ int main(int argc , char* argv[]){
 			cmp_int_root[i] = r_integral->Integral();
 				//Filling TGraph2D
 			for(Int_t j = 0; j <LINES ; j++){
-				max = (y[j] > max) ? y[j] : max;
+				//max = (y[j] > max) ? y[j] : max;
+				if (y[j] > max){
+					max = y[j];
+					maxwl = x[j];
+				}
 				gr->SetPoint(j+i*LINES, x[j],i,y[j]);
 			}
 			in.seekg(0, std::ios::beg);
@@ -152,6 +156,22 @@ int main(int argc , char* argv[]){
 			TImage *img = TImage::Create();
 			img->FromPad(c1);
 			img->WriteImage("all.png");
+
+
+			//Calculating asymmetry
+			double leftlimit,rightlimit = 0;
+			for(int k = 0;k< LINES; k++){
+				if(y[k] >= max - 30){
+					leftlimit = x[k];
+				}
+			}
+
+			for(int k = LINES ;k >= 0 ; k--){
+				if(y[k]>= max -30){
+					rightlimit = x[k];
+				}
+			}
+			integral_hist->Fill(leftlimit/rightlimit);
 		}catch(std::exception e){
 			std::cout << e.what()<< std::endl;
 		}
