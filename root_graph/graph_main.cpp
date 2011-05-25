@@ -21,6 +21,26 @@ bool check(std::string a){
 	}
 }
 
+double findlower(double *x,double *y, double max ){
+	for(int k = 0;k< LINES; k++){
+		if(y[k] >= max - 30){
+			return  x[k];
+			
+		}
+	}
+	return 1;
+}
+
+double findupper(double *x,double *y , double max){
+	for(int l = LINES-1 ;l >= 0 ; l--){
+		if(y[l]>= max -30){
+			return x[l];
+		}
+	}
+	return 1;
+}
+
+
 int main(int argc , char* argv[]){
 	Double_t startwl, stopwl;
 	startwl = boost::lexical_cast<double>(argv[1]);
@@ -29,7 +49,8 @@ int main(int argc , char* argv[]){
 		//delete argv[2];
 	std::cout << startwl << '\t' << stopwl << std::endl;
 	//argc -= NUM_ARGS;
-	Double_t max,maxwl = -210;
+	Double_t max = -210;
+	Double_t maxwl = 0;
 	int _argc = argc;
 	TApplication *t = new TApplication("big",&_argc,argv);
 	std::cout << "Running with boost" <<std::endl;
@@ -39,6 +60,7 @@ int main(int argc , char* argv[]){
 	Double_t *cmp_int = new Double_t[argc];
 	Double_t *argc_ary = new Double_t[argc];
 	Double_t *cmp_int_root = new Double_t[argc];
+	Double_t *asymmety_ary = new Double_t[argc];
 
 	std::ofstream of;
 	std::ofstream integral_of;
@@ -46,7 +68,7 @@ int main(int argc , char* argv[]){
 	TGraph2D *gr = new TGraph2D(LINES*(argc-1));
 		//Setting up canvas for plot of all sectrums (is it called spectrums? ;) )
 	TCanvas *c1 = new TCanvas("All Plots","All Plots",10,10,3000,1500);
-	TH1F *integral_hist = new TH1F("integral", "integral", 100, 0, 100);
+	TH1F *integral_hist = new TH1F("Asymmerty", "Asymmetry", 100, 0.9, 1.1);
 	
 	if(!(argc % ROWS)){
 		c1->Divide(argc/ROWS,ROWS);
@@ -57,6 +79,8 @@ int main(int argc , char* argv[]){
 	of.open("tmp.dat");
 	for (Int_t i = NUM_ARGS +1; i < argc ; i++){
 		try{ 
+			max = -210;
+			maxwl = 0;
 			argc_ary[i] = i;
 			std::ifstream in;
 			in.seekg(0, std::ios::beg);
@@ -119,7 +143,7 @@ int main(int argc , char* argv[]){
 			
 			std::cout << "Simpson integral: " <<s_integral <<std::endl;
 			integral_of << i << '\t' << s_integral << std::endl;
-			//integral_hist->Fill(s_integral);
+				//integral_hist->Fill(s_integral);
 			cmp_int[i] = s_integral;
 			Int_t lines = (Int_t)intb.size();
 			TGraph *r_integral = new TGraph(lines, _inta, _intb);
@@ -159,19 +183,23 @@ int main(int argc , char* argv[]){
 
 
 			//Calculating asymmetry
-			double leftlimit,rightlimit = 0;
-			for(int k = 0;k< LINES; k++){
-				if(y[k] >= max - 30){
-					leftlimit = x[k];
-				}
-			}
-
-			for(int k = LINES ;k >= 0 ; k--){
-				if(y[k]>= max -30){
-					rightlimit = x[k];
-				}
-			}
-			integral_hist->Fill(leftlimit/rightlimit);
+			std::cout << "maximum: " << max << std::endl;
+			double leftlimit, rightlimit = 1;
+				//std::cout << "before for\n";
+			leftlimit = findlower(x,y, max);
+			rightlimit = findupper(x,y, max);
+				//std::cout <<"leftlimit "<< leftlimit <<'\t' <<"rightlimit "<< rightlimit << std::endl;
+			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
+			integral_hist->Fill(calced_asy);
+			asymmety_ary[i] = calced_asy;
+			std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
+			TText *text = new TText(0.5,0.5 , asy_text.c_str());
+			text->SetTextSize(0.35);
+			text->Draw();
+		
+			integral_hist->Fill(calced_asy);
+			std::cout << "Asymmetry: " << calced_asy << std::endl;
+			
 		}catch(std::exception e){
 			std::cout << e.what()<< std::endl;
 		}
@@ -242,13 +270,19 @@ int main(int argc , char* argv[]){
 	TImage *img = TImage::Create();
 	boost::filesystem::path p(t->Argv(1));
 	std::string file = p.parent_path().string();
-	file += "/big.png";
+	file += "big.png";
 	img->FromPad(d);
 	img->WriteImage(file.c_str());
 		//cleaning
 	boost::filesystem::remove(boost::filesystem::path("tmp.dat"));
+	TCanvas *e = new TCanvas("Asymmetry","Asymmetry",10,10,1500,800);
+	TGraph *asy_plot = new TGraph(argc-1, argc_ary, asymmety_ary);
+	e->cd(1);
+	asy_plot->Draw("A*");
+	e->Update();
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
 	t->Run();
+	
 
 	delete[] cmp_int;
 	delete[] argc_ary; 

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9872A067138D0E000000C416 /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9872A066138D0E000000C416 /* graph.cpp */; };
 		98DF831A137BCF3D00E0BB30 /* graph_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98DF8317137BCF3D00E0BB30 /* graph_main.cpp */; };
-		98DF831B137BCF3D00E0BB30 /* graph.C in Sources */ = {isa = PBXBuildFile; fileRef = 98DF8318137BCF3D00E0BB30 /* graph.C */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,11 +24,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9872A066138D0E000000C416 /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
 		98BD525F137D45EE00317403 /* pref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pref.h; path = ../pref.h; sourceTree = "<group>"; };
 		98DF830B137BCF0C00E0BB30 /* root_graph */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = root_graph; sourceTree = BUILT_PRODUCTS_DIR; };
 		98DF8311137BCF0C00E0BB30 /* root_graph.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = root_graph.1; sourceTree = "<group>"; };
 		98DF8317137BCF3D00E0BB30 /* graph_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph_main.cpp; sourceTree = "<group>"; };
-		98DF8318137BCF3D00E0BB30 /* graph.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.C; sourceTree = "<group>"; };
 		98DF8319137BCF3D00E0BB30 /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,7 +73,7 @@
 			children = (
 				98BD5262137D4BC300317403 /* Header */,
 				98DF8317137BCF3D00E0BB30 /* graph_main.cpp */,
-				98DF8318137BCF3D00E0BB30 /* graph.C */,
+				9872A066138D0E000000C416 /* graph.cpp */,
 				98DF8311137BCF0C00E0BB30 /* root_graph.1 */,
 			);
 			path = root_graph;
@@ -130,7 +130,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98DF831A137BCF3D00E0BB30 /* graph_main.cpp in Sources */,
-				98DF831B137BCF3D00E0BB30 /* graph.C in Sources */,
+				9872A067138D0E000000C416 /* graph.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
