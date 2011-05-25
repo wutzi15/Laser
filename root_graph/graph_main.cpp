@@ -8,6 +8,8 @@
 
 #define MIN -70.0
 
+#define NUM_ARGS 2
+
 
 bool check(std::string a){
 		//Check if string is a good double
@@ -20,10 +22,15 @@ bool check(std::string a){
 }
 
 int main(int argc , char* argv[]){
-	
+	Double_t startwl, stopwl;
+	startwl = boost::lexical_cast<double>(argv[1]);
+	stopwl = boost::lexical_cast<double>(argv[2]);
+		//delete argv[1];
+		//delete argv[2];
+	std::cout << startwl << '\t' << stopwl << std::endl;
+	argc -= NUM_ARGS;
 	Double_t max = -210;
 	int _argc = argc;
-	
 	TApplication *t = new TApplication("big",&_argc,argv);
 	std::cout << "Running with boost" <<std::endl;
 	std::vector<double> _x,_y;
@@ -42,7 +49,7 @@ int main(int argc , char* argv[]){
 		c1->Divide(argc/ROWS+(argc %ROWS),ROWS);
 	}
 	of.open("tmp.dat");
-	for (Int_t i = 1 ; i < argc ; i++){
+	for (Int_t i = NUM_ARGS +1; i < argc ; i++){
 		try{ 
 			argc_ary[i] = i;
 			std::ifstream in;
@@ -125,7 +132,7 @@ int main(int argc , char* argv[]){
 			TGraph *_gr = new TGraph(LINES,x,y);
 			_gr->GetHistogram()->GetXaxis()->SetTitle("#lambda in nm");
 			_gr->GetHistogram()->GetYaxis()->SetTitle("Intensity in dB");
-			c1->cd(i);
+			c1->cd(i-NUM_ARGS);
 			Double_t integral = 0;
 			TH1F* hist = _gr->GetHistogram();
 			for (Int_t k =0 ; k < hist->GetNbinsX();k++){
@@ -133,7 +140,7 @@ int main(int argc , char* argv[]){
 			}
 			_gr->Draw("AP");
 			_gr->GetYaxis()->SetRangeUser(-80.,-10.);
-			_gr->GetXaxis()->SetRangeUser(849.,859.);
+			_gr->GetXaxis()->SetRangeUser(startwl,stopwl);
 			_gr->SetTitle(tmp.c_str());
 			c1->Update();
 			TImage *img = TImage::Create();
@@ -144,7 +151,7 @@ int main(int argc , char* argv[]){
 		}
 	}
 	of.close();
-	
+		//std::cout<< "wutzi foo\n";
 		//Setting style for 3D Plot
 	TCanvas *d = new TCanvas("big","big",10,10,1500,800);
 	d->Divide(2,2);
@@ -154,8 +161,11 @@ int main(int argc , char* argv[]){
 	the_ints->SetTitle("My Ints");
 	d->Update();
 	d->cd(2);
+	std::cout << "Fitting\n\n";
 	integral_hist->SetFillColor(kBlue);
-	integral_hist->Draw();
+		//integral_hist->Draw();
+	integral_hist->Fit("gaus");
+		//integral_hist->Draw();
 	d->Update();
 	d->cd(3);
 	TGraph *roots_int = new TGraph(argc-1, argc_ary, cmp_int_root);
@@ -167,7 +177,7 @@ int main(int argc , char* argv[]){
 	gROOT->SetStyle("modern");
 	gr->SetTitle("big");
 	gr->GetHistogram("empty")->GetXaxis()->SetTitle("#lambda in nm");
-	gr->GetHistogram("empty")->GetXaxis()->SetLimits(850.0,856.0);
+	gr->GetHistogram("empty")->GetXaxis()->SetLimits(startwl,stopwl);
 	gr->GetHistogram("empty")->GetYaxis()->SetTitle("Messurement"); 
 	gr->GetHistogram("empty")->GetZaxis()->SetTitle("Intensity in dB");
 	gr->GetHistogram("empty")->GetXaxis()->SetTitleOffset(1.5);
