@@ -69,7 +69,7 @@ int main(int argc , char* argv[]){
 	TGraph2D *gr = new TGraph2D(LINES*(argc-1));
 		//Setting up canvas for plot of all sectrums (is it called spectrums? ;) )
 	TCanvas *c1 = new TCanvas("All Plots","All Plots",10,10,3000,1500);
-	TH1F *integral_hist = new TH1F("Asymmerty", "Asymmetry", 100, 0.9, 1.1);
+	TH1F *integral_hist = new TH1F("Asymmerty", "Asymmetry", 100,0, 100);
 	
 	std::cout << argc%ROWS<< std::endl;
 	if(!(argc % ROWS)){
@@ -146,7 +146,7 @@ int main(int argc , char* argv[]){
 			
 			std::cout << "Simpson integral: " <<s_integral <<std::endl;
 			integral_of << i << '\t' << s_integral << std::endl;
-				//integral_hist->Fill(s_integral);
+			integral_hist->Fill(s_integral);
 			cmp_int[i] = s_integral;
 			Int_t lines = (Int_t)intb.size();
 			TGraph *r_integral = new TGraph(lines, _inta, _intb);
@@ -194,14 +194,14 @@ int main(int argc , char* argv[]){
 			width_ary[i] = (leftlimit +rightlimit)/2;
 				//std::cout <<"leftlimit "<< leftlimit <<'\t' <<"rightlimit "<< rightlimit << std::endl;
 			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
-			integral_hist->Fill(calced_asy);
+				//integral_hist->Fill(calced_asy);
 			asymmety_ary[i-3] = calced_asy;
 			std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
 			/*TText *text = new TText(0.5,0.5 , asy_text.c_str());
 			 text->SetTextSize(0.35);
 			 text->Draw();
 			 */
-			integral_hist->Fill(calced_asy);
+				//integral_hist->Fill(calced_asy);
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
 			
 		}catch(std::exception e){
