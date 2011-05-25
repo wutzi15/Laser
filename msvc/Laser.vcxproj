@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{01E85A12-A572-4832-AE29-EC5167CFCAAF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Laser</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\root\include;C:\Users\BBergenthal\Desktop\Work\Laser\root_graph;C:\Users\BBergenthal\Desktop\Work\Laser;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\root\lib;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\root\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\root\include;C:\Users\BBergenthal\Desktop\Work\Laser\root_graph;C:\Users\BBergenthal\Desktop\Work\Laser;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\root\lib;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\root\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pref.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>gdk-1.3.lib;glib-1.3.lib;libASImage.lib;libASImageGui.lib;libAfterImage.lib;libCint.lib;libCintex.lib;libCore.lib;libEG.lib;libEGPythia6.lib;libEGPythia8.lib;libEve.lib;libFFTW.lib;libFTGL.lib;libFitPanel.lib;libFoam.lib;libFumili.lib;libGLEW.lib;libGdml.lib;libGed.lib;libGenVector.lib;libGenetic.lib;libGeom.lib;libGeomBuilder.lib;libGeomPainter.lib;libGpad.lib;libGraf.lib;libGraf3d.lib;libGui.lib;libGuiBld.lib;libGuiHtml.lib;libGviz.lib;libGviz3d.lib;libHbook.lib;libHist.lib;libHistFactory.lib;libHistPainter.lib;libHtml.lib;libMLP.lib;libMathCore.lib;libMathMore.lib;libMatrix.lib;libMinuit.lib;libMinuit2.lib;libNet.lib;libNetx.lib;libOracle.lib;libPhysics.lib;libPostscript.lib;libProof.lib;libProofDraw.lib;libProofPlayer.lib;libProofx.lib;libPyROOT.lib;libQtGSI.lib;libQuadp.lib;libRCastor.lib;libRFIO.lib;libRGL.lib;libRIO.lib;libRMySQL.lib;libRODBC.lib;libRecorder.lib;libReflex.lib;libReflexDict.lib;libRint.lib;libRooFit.lib;libRooFitCore.lib;libRooStats.lib;libRootAuth.lib;libSPlot.lib;libSQLIO.lib;libSessionViewer.lib;libSmatrix.lib;libSpectrum.lib;libSpectrumPainter.lib;libTMVA.lib;libTable.lib;libThread.lib;libTree.lib;libTreePlayer.lib;libTreeViewer.lib;libUnuran.lib;libVMC.lib;libWin32gdk.lib;libXMLIO.lib;libXMLParser.lib;libXrdProofd.lib;libcomplexDict.lib;libdequeDict.lib;libfreetype.lib;liblistDict.lib;libmap2Dict.lib;libmapDict.lib;libminicern.lib;libmultimap2Dict.lib;libmultimapDict.lib;libmultisetDict.lib;libpcre.lib;libsetDict.lib;libvectorDict.lib;pthreadVC2.lib;pthreadVSE2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pref.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>gdk-1.3.lib;glib-1.3.lib;libASImage.lib;libASImageGui.lib;libAfterImage.lib;libCint.lib;libCintex.lib;libCore.lib;libEG.lib;libEGPythia6.lib;libEGPythia8.lib;libEve.lib;libFFTW.lib;libFTGL.lib;libFitPanel.lib;libFoam.lib;libFumili.lib;libGLEW.lib;libGdml.lib;libGed.lib;libGenVector.lib;libGenetic.lib;libGeom.lib;libGeomBuilder.lib;libGeomPainter.lib;libGpad.lib;libGraf.lib;libGraf3d.lib;libGui.lib;libGuiBld.lib;libGuiHtml.lib;libGviz.lib;libGviz3d.lib;libHbook.lib;libHist.lib;libHistFactory.lib;libHistPainter.lib;libHtml.lib;libMLP.lib;libMathCore.lib;libMathMore.lib;libMatrix.lib;libMinuit.lib;libMinuit2.lib;libNet.lib;libNetx.lib;libOracle.lib;libPhysics.lib;libPostscript.lib;libProof.lib;libProofDraw.lib;libProofPlayer.lib;libProofx.lib;libPyROOT.lib;libQtGSI.lib;libQuadp.lib;libRCastor.lib;libRFIO.lib;libRGL.lib;libRIO.lib;libRMySQL.lib;libRODBC.lib;libRecorder.lib;libReflex.lib;libReflexDict.lib;libRint.lib;libRooFit.lib;libRooFitCore.lib;libRooStats.lib;libRootAuth.lib;libSPlot.lib;libSQLIO.lib;libSessionViewer.lib;libSmatrix.lib;libSpectrum.lib;libSpectrumPainter.lib;libTMVA.lib;libTable.lib;libThread.lib;libTree.lib;libTreePlayer.lib;libTreeViewer.lib;libUnuran.lib;libVMC.lib;libWin32gdk.lib;libXMLIO.lib;libXMLParser.lib;libXrdProofd.lib;libcomplexDict.lib;libdequeDict.lib;libfreetype.lib;liblistDict.lib;libmap2Dict.lib;libmapDict.lib;libminicern.lib;libmultimap2Dict.lib;libmultimapDict.lib;libmultisetDict.lib;libpcre.lib;libsetDict.lib;libvectorDict.lib;pthreadVC2.lib;pthreadVSE2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\pref.h" />
+    <ClInclude Include="..\root_graph\graph.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\root_graph\graph.cpp" />
+    <ClCompile Include="..\root_graph\graph_main.cpp" />
+    <ClCompile Include="pref.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

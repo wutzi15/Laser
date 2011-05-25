@@ -1,6 +1,5 @@
-
-#include "graph.h"
 #include "pref.h"
+#include "graph.h"
 
 #define LINES 5001
 
@@ -12,7 +11,8 @@
 bool check(std::string a){
 		//Check if string is a good double
 	try{
-		__attribute__ ((unused)) double d = boost::lexical_cast<double>(a);
+		double d = boost::lexical_cast<double>(a);
+		(void)d;
 		return true;
 	}catch(boost::bad_lexical_cast){
 		return false;
@@ -27,8 +27,12 @@ int main(int argc , char* argv[]){
 	TApplication *t = new TApplication("big",&_argc,argv);
 	std::cout << "Running with boost" <<std::endl;
 	std::vector<double> _x,_y;
-	Double_t x[LINES], y[LINES], _inta[LINES], _intb[LINES], cmp_int[argc],argc_ary [argc],cmp_int_root[argc];
-	
+	Double_t x[LINES], y[LINES], _inta[LINES], _intb[LINES]; //, cmp_int[argc],argc_ary [argc],cmp_int_root[argc];
+
+	Double_t *cmp_int = new Double_t[argc];
+	Double_t *argc_ary = new Double_t[argc];
+	Double_t *cmp_int_root = new Double_t[argc];
+
 	std::ofstream of;
 	std::ofstream integral_of;
 	integral_of.open("integral.txt");
@@ -215,5 +219,10 @@ int main(int argc , char* argv[]){
 	boost::filesystem::remove(boost::filesystem::path("tmp.dat"));
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
 	t->Run();
+
+	delete[] cmp_int;
+	delete[] argc_ary; 
+	delete[] cmp_int_root;
+
 	return 0;
 }
