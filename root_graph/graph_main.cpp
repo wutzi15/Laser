@@ -1,6 +1,9 @@
 #include "pref.h"
 #include "graph.h"
 
+
+	//#define RENDER
+
 #define LINES 5001
 
 #define ROWS 4
@@ -9,10 +12,23 @@
 
 #define NUM_ARGS 2
 
-#define WARNING_PERC 20
+#define WARNING_PERC_ASY 200
 
-#define NOTICE_PER 10
+#define NOTICE_PER_ASY 120
 
+#define WARNING_PERC_CEN 0.1
+
+#define NOTICE_PER_CEN 0.05
+
+#define WARNING_ALONE_ASY 200
+
+#define PM_OFFSET 100
+
+
+enum Level{
+	NOTICE = 1,
+	WARNING = 2
+};
 
 bool check(std::string a){
 		//Check if string is a good double
@@ -35,6 +51,7 @@ double findlower(double *x,double *y, double max ){
 	return 1;
 }
 
+
 double findupper(double *x,double *y , double max){
 	for(int l = LINES-1 ;l >= 0 ; l--){
 		if(y[l]>= max -30){
@@ -44,7 +61,31 @@ double findupper(double *x,double *y , double max){
 	return 1;
 }
 
-void gradient(double *asy, double *center, int n){
+bool ispm(double num, double pm){
+	if (num >= pm+PM_OFFSET || num <=PM_OFFSET-pm) {
+		return true;
+	}
+	return false;
+}
+
+void label(TCanvas *canv, int pos, Level level){
+	if (level == WARNING) {
+		TPad *pad =(TPad*)canv->cd(pos);
+		std::string title = pad->GetTitle();
+		title += " WARNING!";
+		pad->SetTitle(title.c_str());
+		
+	}
+	if (level == NOTICE) {
+		TPad *pad =(TPad*)canv->cd(pos);
+		std::string title = pad->GetTitle();
+		title += " NOTICE!";
+		pad->SetTitle(title.c_str());
+	}
+	
+}
+
+void gradient(double *asy, double *center, int n,TCanvas *canv){
 	bool warning = false;
 	for(int i = 0; i < n -2; i++){
 		
@@ -54,68 +95,95 @@ void gradient(double *asy, double *center, int n){
 		double gradient_centr2;
 		gradient_asy = (asy[i]/asy[i+1])*100;
 		if(i <= ((sizeof(asy)/sizeof(asy[0]))) -2){
-			 gradient_asy2 =  (asy[i+1]/asy[i+2])*100;
+			gradient_asy2 =  (asy[i+1]/asy[i+2])*100;
 		}else{
-			 gradient_asy2 = 0;
+			gradient_asy2 = 0;
 		}
 		gradient_centr = (center[i]/center[i+1])*100;
 		gradient_centr2 = (center[i+1]/center[i+2])*100;
 		if (gradient_asy == INFINITY || gradient_asy2== INFINITY || gradient_centr == INFINITY|| gradient_centr2 == INFINITY) {
 			continue;
 		}
-			//Notices
-		if(gradient_asy >= NOTICE_PER && gradient_centr >= NOTICE_PER ){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
-		}
-		if(gradient_asy2 >= NOTICE_PER && gradient_centr >= NOTICE_PER ){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr << std::endl;
-		}
-		if(gradient_asy >= NOTICE_PER && gradient_centr2 >= NOTICE_PER ){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
-		}
-		if(gradient_asy2 >= NOTICE_PER && gradient_centr2 >= NOTICE_PER ){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
-		}
 			//Warnings
-		if(gradient_asy >= WARNING_PERC && gradient_centr >= WARNING_PERC ){
+		if(gradient_asy >= WARNING_PERC_ASY && ispm(gradient_centr, WARNING_PERC_CEN) ){
 			warning=true;
 			std::cout << "\n\n WARNING!!! \n\n";
 			std::cout << "Gradient detected @:"<<i << std::endl;
 			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
+			label(canv,i,WARNING);
+			continue;
 		}
-		if(gradient_asy2 >= WARNING_PERC && gradient_centr >= WARNING_PERC ){
+		if(gradient_asy2 >= WARNING_PERC_ASY && ispm(gradient_centr, WARNING_PERC_CEN) ){
 			warning=true;
 			std::cout << "\n\n WARNING!!! \n\n";
 			std::cout << "Gradient detected @:"<<i << std::endl;
 			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr << std::endl;
+			label(canv,i,WARNING);
+			continue;
 		}
-		if(gradient_asy >= WARNING_PERC && gradient_centr2 >= WARNING_PERC ){
+		if(gradient_asy >= WARNING_PERC_ASY && ispm(gradient_centr2, WARNING_PERC_CEN) ){
 			warning=true;
 			std::cout << "\n\n WARNING!!! \n\n";
 			std::cout << "Gradient detected @:"<<i << std::endl;
 			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+			label(canv,i,WARNING);
+			continue;
 		}
-		if(gradient_asy2 >= WARNING_PERC && gradient_centr2 >= WARNING_PERC ){
+		if(gradient_asy2 >= WARNING_PERC_ASY && ispm(gradient_centr2, WARNING_PERC_CEN) ){
 			warning=true;
 			std::cout << "\n\n WARNING!!! \n\n";
 			std::cout << "Gradient detected @:"<<i << std::endl;
 			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+			label(canv,i,WARNING);
+			continue;
 		}
+			//Special Warning
+		if (gradient_asy >= WARNING_ALONE_ASY) {
+			warning = true;
+			std::cout << "\n\nWARNING!\nONLY BY ASYMMETRY\n\n";
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
+			label(canv,i,WARNING);
+			continue;
+		}
+			//Notices
+		if(gradient_asy >= NOTICE_PER_ASY && ispm(gradient_centr, NOTICE_PER_CEN)){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
+			label(canv,i,NOTICE);
+			continue;
+		}
+		if(gradient_asy2 >= NOTICE_PER_ASY && ispm(gradient_centr, NOTICE_PER_CEN) ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr << std::endl;
+			label(canv,i,NOTICE);
+			continue;
+		}
+		if(gradient_asy >= NOTICE_PER_ASY && ispm(gradient_centr2, NOTICE_PER_CEN) ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+			label(canv,i,NOTICE);
+			continue;
+		}
+		if(gradient_asy2 >= NOTICE_PER_ASY && ispm(gradient_centr2, NOTICE_PER_CEN) ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+			label(canv,i,NOTICE);
+			continue;
+		}
+		
+		
 	}
 	if (warning) {
 		TCanvas *warn = new TCanvas("Warning", "Warning", 200, 100);
-		TText *warn_text = new TText(0.2, 0.4, "Warning!");
+		TText *warn_text = new TText(0.1, 0.4, "Warning!");
 		warn_text->SetTextSize(0.5);
 		warn_text->SetTextColor(kRed);
 		warn->cd(1);
 		warn_text->Draw();
 		warn->Update();
 	}
-
+	
 }
 
 int main(int argc , char* argv[]){
@@ -161,7 +229,8 @@ int main(int argc , char* argv[]){
 		try{ 
 			max = -210;
 			maxwl = 0;
-			argc_ary[i] = i;
+			argc_ary[i] = i-NUM_ARGS;
+			
 			std::ifstream in;
 			in.seekg(0, std::ios::beg);
 				// voodoo keep this;
@@ -268,7 +337,11 @@ int main(int argc , char* argv[]){
 				//std::cout << "before for\n";
 			leftlimit = findlower(x,y, max);
 			rightlimit = findupper(x,y, max);
-			width_ary[i] = (leftlimit +rightlimit)/2;
+			if (leftlimit != 1 && rightlimit != 1){
+				width_ary[i] = (leftlimit +rightlimit)/2;
+			}else{
+				width_ary[i] = maxwl;
+			}
 				//std::cout <<"leftlimit "<< leftlimit <<'\t' <<"rightlimit "<< rightlimit << std::endl;
 			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
 				//integral_hist->Fill(calced_asy);
@@ -303,6 +376,7 @@ int main(int argc , char* argv[]){
 		//integral_hist->Draw();
 	d->Update();
 	d->cd(3);
+	
 	TGraph *roots_int = new TGraph(argc-1, argc_ary, cmp_int_root);
 	roots_int->SetTitle("ROOTS Int");
 	roots_int->Draw("A*");
@@ -323,30 +397,36 @@ int main(int argc , char* argv[]){
 	gr->GetHistogram("empty")->GetYaxis()->CenterTitle();
 	gr->GetHistogram("empty")->GetZaxis()->CenterTitle();
 	gr->Draw("PCOL");
-	d->SetFillColor(16);/*
-						 //Render 3D animation
-						 const Int_t kUPDATE = 1;
-						 TSlider *slider = 0;
-						 
-						 for (Int_t i = 1; i <= 125; i++){
-						 TView3D *v = new TView3D();
-						 v->RotateView(5+i,45+i,d);
-						 //d->Update();
-						 
-						 if(i && (i%kUPDATE)== 0){
-						 if (i == kUPDATE){
-						 gr->Draw("PCOL");
-						 d->Update();
-						 slider = new TSlider("slider","test",850,-70,856,max);
-						 }
-						 if (slider) slider->SetRange(0,Float_t(i)/10000.);
-						 d->Modified();
-						 d->Update();
-						 d->Print("3d.gif+");
-						 } 
-						 }*/
+	d->SetFillColor(16);
+	
+	
+#ifdef RENDER
+		//Render 3D animation
+	const Int_t kUPDATE = 1;
+	TSlider *slider = 0;
+	
+	for (Int_t i = 1; i <= 125; i++){
+		TView3D *v = new TView3D();
+		v->RotateView(5+i,45+i,d);
+			//d->Update();
+		
+		if(i && (i%kUPDATE)== 0){
+			if (i == kUPDATE){
+				gr->Draw("PCOL");
+				d->Update();
+				slider = new TSlider("slider","test",850,-70,856,max);
+			}
+			if (slider) slider->SetRange(0,Float_t(i)/10000.);
+			d->Modified();
+			d->Update();
+			d->Print("3d.gif+");
+		} 
+	}
 	d->Update();
 	d->Print("3d.gif++");
+#endif
+	
+
 		//Saving image
 	TImage *img = TImage::Create();
 	boost::filesystem::path p(t->Argv(3));
@@ -367,7 +447,7 @@ int main(int argc , char* argv[]){
 	asy_plot->Draw("A*");
 	e->Update();
 	e->cd(2);
-		
+	
 	
 	TGraph *center_plot = new TGraph(argc-1 , argc_ary, width_ary);
 	center_plot->GetHistogram()->GetXaxis()->SetTitle("# Meassurement");
@@ -376,7 +456,7 @@ int main(int argc , char* argv[]){
 	center_plot->SetTitle("Center");
 	center_plot->Draw("A*");
 	e->Update();
-			//Saving Images
+		//Saving Images
 	TImage *secimg = TImage::Create();
 	boost::filesystem::path p2(t->Argv(3));
 	file = p2.parent_path().string();
@@ -392,9 +472,9 @@ int main(int argc , char* argv[]){
 	thrdimg->WriteImage(file.c_str());
 	
 		//detecting Gradients
-	gradient(asymmety_ary, width_ary, argc-1);
+	gradient(asymmety_ary, width_ary, argc-1,c1);
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
-
+	
 	t->Run();
 	
 	
