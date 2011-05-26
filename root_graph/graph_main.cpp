@@ -27,7 +27,6 @@ void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv)
 		gradient_centr = (center[i+1]-center[i]);
 		gradient_int = (integral[i+1]-integral[i]);
 		gradient_centr2 = (center[i+1]-center[i+2]);
-			//std::cout << "grad int: "<< gradient_int <<'\t'<< "grad asy:" << gradient_asy << '\t' << "grad centr: " << gradient_centr<< std::endl;
 		if (gradient_asy == INFINITY || gradient_asy2== INFINITY || gradient_centr == INFINITY|| gradient_centr2 == INFINITY || gradient_int == INFINITY || gradient_int2 == INFINITY) {
 			continue;
 		}
@@ -63,17 +62,15 @@ int main(int argc , char* argv[]){
 	Double_t startwl, stopwl;
 	startwl = boost::lexical_cast<double>(argv[1]);
 	stopwl = boost::lexical_cast<double>(argv[2]);
-		//delete argv[1];
-		//delete argv[2];
 	std::cout << startwl << '\t' << stopwl << std::endl;
-		//argc -= NUM_ARGS;
+
 	Double_t max = -210;
 	Double_t maxwl = 0;
 	int _argc = argc;
 	TApplication *t = new TApplication("big",&_argc,argv);
 	std::cout << "Running with boost" <<std::endl;
 	std::vector<double> _x,_y;
-	Double_t x[LINES], y[LINES], _inta[LINES], _intb[LINES]; //, cmp_int[argc],argc_ary [argc],cmp_int_root[argc];
+	Double_t x[LINES], y[LINES], _inta[LINES], _intb[LINES]; 
 	
 	Double_t *cmp_int = new Double_t[argc];
 	Double_t *argc_ary = new Double_t[argc];
@@ -180,7 +177,6 @@ int main(int argc , char* argv[]){
 				//Filling TGraph2D
 			
 			for(Int_t j = 0; j <LINES ; j++){
-					//max = (y[j] > max) ? y[j] : max;
 				if (y[j] > max){
 					max = y[j];
 					maxwl = x[j];
@@ -213,7 +209,6 @@ int main(int argc , char* argv[]){
 				//Calculating asymmetry
 			std::cout << "maximum: " << max << std::endl;
 			double leftlimit, rightlimit = 1;
-				//std::cout << "before for\n";
 			leftlimit = findlower(x,y, max);
 			rightlimit = findupper(x,y, max);
 			if (leftlimit != 1 && rightlimit != 1){
@@ -221,16 +216,9 @@ int main(int argc , char* argv[]){
 			}else{
 				width_ary[i] = maxwl;
 			}
-				//std::cout <<"leftlimit "<< leftlimit <<'\t' <<"rightlimit "<< rightlimit << std::endl;
 			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
-				//integral_hist->Fill(calced_asy);
 			asymmety_ary[i-3] = calced_asy;
 			std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
-			/*TText *text = new TText(0.5,0.5 , asy_text.c_str());
-			 text->SetTextSize(0.35);
-			 text->Draw();
-			 */
-				//integral_hist->Fill(calced_asy);
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
 			
 		}catch(std::exception e){
@@ -238,7 +226,6 @@ int main(int argc , char* argv[]){
 		}
 	}
 	of.close();
-		//std::cout<< "wutzi foo\n";
 		//Setting style for 3D Plot
 	TCanvas *d = new TCanvas("big","big",10,10,1500,800);
 	d->Divide(2,2);
@@ -250,9 +237,8 @@ int main(int argc , char* argv[]){
 	d->cd(2);
 	std::cout << "Fitting\n\n";
 	integral_hist->SetFillColor(kBlue);
-		//integral_hist->Draw();
+	integral_hist->Draw();
 	integral_hist->Fit("gaus");
-		//integral_hist->Draw();
 	d->Update();
 	d->cd(3);
 	

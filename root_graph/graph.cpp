@@ -29,7 +29,7 @@ void graph(std::string name, bool big){
 			in >> x[i] >> y[i];
 		} 
 		
-			
+		
 		c1->cd(1);
 		TGraph *gr = new TGraph(5001,x,y);
 		gr->SetMinimum(-60.);
@@ -39,7 +39,7 @@ void graph(std::string name, bool big){
 			if(y[i]>= -60.)
 				h->SetBinContent(i,y[i]);
 		}
-
+		
 		h->SetYTitle("Intensity in dB");
 		h->SetXTitle("#lambda in nm");
 		h->SetTitle("Sectrum");
@@ -54,7 +54,7 @@ void graph(std::string name, bool big){
 		Double_t par[3000];
 		TF1 *fline = new TF1("fline","pol1",842,852);
 		h->Fit("fline","qn");
-
+		
 		par[0] = fline->GetParameter(0);
 		par[1] = fline->GetParameter(1);
 			//loop on all found peaks. Eliminate peaks at the background level
@@ -107,7 +107,7 @@ void AtlasStyle() {
 	atlasStyle->SetPadBorderMode(icol);
 	atlasStyle->SetPadColor(icol);
 	atlasStyle->SetStatColor(icol);
-		//atlasStyle->SetFillColor(icol); // don't use: white fill color floa *all* objects
+		// don't use: white fill color floa *all* objects
 	
 		// set the paper & margin sizes
 	atlasStyle->SetPaperSize(20,26);
@@ -117,7 +117,7 @@ void AtlasStyle() {
 	atlasStyle->SetPadLeftMargin(0.16);
 	
 		// use large fonts
-		//Int_t font=72; // Helvetica italics
+		// Helvetica italics
 	Int_t font=42; // Helvetica
 	Double_t tsize=0.05;
 	atlasStyle->SetTextFont(font);
@@ -144,7 +144,6 @@ void AtlasStyle() {
 	atlasStyle->SetLineStyleString(2,"[12 12]"); // postscript dashes
 	
 		// get rid of X error bars and y error bar caps
-		//atlasStyle->SetErrorX(0.001);
 	
 		// do not display any of the standard histogram decorations
 	atlasStyle->SetTitleBorderSize(1);
@@ -152,17 +151,14 @@ void AtlasStyle() {
 	atlasStyle->SetTitleFillColor(icol);
 	atlasStyle->SetTitleX(0.5);
 	atlasStyle->SetTitleY(1);
-		//atlasStyle->SetOptStat(1111);
 	atlasStyle->SetOptStat(0);
-		//atlasStyle->SetOptFit(1111);
 	atlasStyle->SetOptFit(0);
 	
 		// put tick marks on top and RHS of plots
 	atlasStyle->SetPadTickX(1);
 	atlasStyle->SetPadTickY(1);
 	
-		// reset plain style
-		//gROOT->SetStyle("Plain");
+	
 	
 	gROOT->SetStyle("ATLAS");
 	gROOT->ForceStyle();
