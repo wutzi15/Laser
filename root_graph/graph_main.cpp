@@ -1,34 +1,9 @@
 #include "pref.h"
 #include "graph.h"
+#include "defines.h"
 
 
-	//#define RENDER
 
-#define LINES 5001
-
-#define ROWS 4
-
-#define MIN -70.0
-
-#define NUM_ARGS 2
-
-#define WARNING_PERC_ASY 200
-
-#define NOTICE_PER_ASY 120
-
-#define WARNING_PERC_CEN 0.1
-
-#define NOTICE_PER_CEN 0.05
-
-#define WARNING_ALONE_ASY 200
-
-#define PM_OFFSET 100
-
-
-enum Level{
-	NOTICE = 1,
-	WARNING = 2
-};
 
 bool check(std::string a){
 		//Check if string is a good double
@@ -85,7 +60,7 @@ void label(TCanvas *canv, int pos, Level level){
 	
 }
 
-void gradient(double *asy, double *center, int n,TCanvas *canv){
+void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv){
 	bool warning = false;
 	for(int i = 0; i < n -2; i++){
 		
@@ -93,26 +68,39 @@ void gradient(double *asy, double *center, int n,TCanvas *canv){
 		double gradient_asy2;
 		double gradient_centr ;
 		double gradient_centr2;
-		gradient_asy = (asy[i]/asy[i+1])*100;
+		double gradient_int;
+		double gradient_int2;
+		gradient_asy = (asy[i]-asy[i+1]);
 		if(i <= ((sizeof(asy)/sizeof(asy[0]))) -2){
-			gradient_asy2 =  (asy[i+1]/asy[i+2])*100;
+			gradient_asy2 =  (asy[i+1]-asy[i+2]);
+			gradient_int2 = (integral[i+1]-integral[i+2]);
 		}else{
 			gradient_asy2 = 0;
 		}
-		gradient_centr = (center[i]/center[i+1])*100;
-		gradient_centr2 = (center[i+1]/center[i+2])*100;
-		if (gradient_asy == INFINITY || gradient_asy2== INFINITY || gradient_centr == INFINITY|| gradient_centr2 == INFINITY) {
+		gradient_centr = (center[i]-center[i+1]);
+		gradient_int = (integral[i]-integral[i+1]);
+		gradient_centr2 = (center[i+1]-center[i+2]);
+			//std::cout << "grad int: "<< gradient_int <<'\t'<< "grad asy:" << gradient_asy << '\t' << "grad centr: " << gradient_centr<< std::endl;
+		if (gradient_asy == INFINITY || gradient_asy2== INFINITY || gradient_centr == INFINITY|| gradient_centr2 == INFINITY || gradient_int == INFINITY || gradient_int2 == INFINITY) {
 			continue;
 		}
 			//Warnings
-		if(gradient_asy >= WARNING_PERC_ASY && ispm(gradient_centr, WARNING_PERC_CEN) ){
+		if(fabs(gradient_asy) >= WARNING_PERC_ASY || fabs(gradient_centr)>= WARNING_PERC_CEN || fabs(gradient_int)>= WARNING_PERC_INT ){
 			warning=true;
 			std::cout << "\n\n WARNING!!! \n\n";
 			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << '\t'<<"Inten. Grad: " << gradient_int<<std::endl;
 			label(canv,i,WARNING);
 			continue;
 		}
+		if(fabs(gradient_asy) >= NOTICE_PER_ASY || fabs(gradient_centr)>= NOTICE_PER_CEN || fabs(gradient_int)>= NOTICE_PERC_INT ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << '\t'<<"Inten. Grad: " << gradient_int<<std::endl;
+			label(canv,i,NOTICE);
+			continue;
+		}
+		
+		/*
 		if(gradient_asy2 >= WARNING_PERC_ASY && ispm(gradient_centr, WARNING_PERC_CEN) ){
 			warning=true;
 			std::cout << "\n\n WARNING!!! \n\n";
@@ -170,7 +158,7 @@ void gradient(double *asy, double *center, int n,TCanvas *canv){
 			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
 			label(canv,i,NOTICE);
 			continue;
-		}
+		}*/
 		
 		
 	}
@@ -472,7 +460,7 @@ int main(int argc , char* argv[]){
 	thrdimg->WriteImage(file.c_str());
 	
 		//detecting Gradients
-	gradient(asymmety_ary, width_ary, argc-1,c1);
+	gradient(asymmety_ary, width_ary,cmp_int, argc-1,c1);
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
 	
 	t->Run();
