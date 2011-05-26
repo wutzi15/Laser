@@ -9,6 +9,10 @@
 
 #define NUM_ARGS 2
 
+#define WARNING_PERC 20
+
+#define NOTICE_PER 10
+
 
 bool check(std::string a){
 		//Check if string is a good double
@@ -40,6 +44,79 @@ double findupper(double *x,double *y , double max){
 	return 1;
 }
 
+void gradient(double *asy, double *center, int n){
+	bool warning = false;
+	for(int i = 0; i < n -2; i++){
+		
+		double gradient_asy;
+		double gradient_asy2;
+		double gradient_centr ;
+		double gradient_centr2;
+		gradient_asy = (asy[i]/asy[i+1])*100;
+		if(i <= ((sizeof(asy)/sizeof(asy[0]))) -2){
+			 gradient_asy2 =  (asy[i+1]/asy[i+2])*100;
+		}else{
+			 gradient_asy2 = 0;
+		}
+		gradient_centr = (center[i]/center[i+1])*100;
+		gradient_centr2 = (center[i+1]/center[i+2])*100;
+		if (gradient_asy == INFINITY || gradient_asy2== INFINITY || gradient_centr == INFINITY|| gradient_centr2 == INFINITY) {
+			continue;
+		}
+			//Notices
+		if(gradient_asy >= NOTICE_PER && gradient_centr >= NOTICE_PER ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
+		}
+		if(gradient_asy2 >= NOTICE_PER && gradient_centr >= NOTICE_PER ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr << std::endl;
+		}
+		if(gradient_asy >= NOTICE_PER && gradient_centr2 >= NOTICE_PER ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+		}
+		if(gradient_asy2 >= NOTICE_PER && gradient_centr2 >= NOTICE_PER ){
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+		}
+			//Warnings
+		if(gradient_asy >= WARNING_PERC && gradient_centr >= WARNING_PERC ){
+			warning=true;
+			std::cout << "\n\n WARNING!!! \n\n";
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
+		}
+		if(gradient_asy2 >= WARNING_PERC && gradient_centr >= WARNING_PERC ){
+			warning=true;
+			std::cout << "\n\n WARNING!!! \n\n";
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr << std::endl;
+		}
+		if(gradient_asy >= WARNING_PERC && gradient_centr2 >= WARNING_PERC ){
+			warning=true;
+			std::cout << "\n\n WARNING!!! \n\n";
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+		}
+		if(gradient_asy2 >= WARNING_PERC && gradient_centr2 >= WARNING_PERC ){
+			warning=true;
+			std::cout << "\n\n WARNING!!! \n\n";
+			std::cout << "Gradient detected @:"<<i << std::endl;
+			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
+		}
+	}
+	if (warning) {
+		TCanvas *warn = new TCanvas("Warning", "Warning", 200, 100);
+		TText *warn_text = new TText(0.2, 0.4, "Warning!");
+		warn_text->SetTextSize(0.5);
+		warn_text->SetTextColor(kRed);
+		warn->cd(1);
+		warn_text->Draw();
+		warn->Update();
+	}
+
+}
 
 int main(int argc , char* argv[]){
 	Double_t startwl, stopwl;
@@ -299,8 +376,7 @@ int main(int argc , char* argv[]){
 	center_plot->SetTitle("Center");
 	center_plot->Draw("A*");
 	e->Update();
-	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
-		//Saving Images
+			//Saving Images
 	TImage *secimg = TImage::Create();
 	boost::filesystem::path p2(t->Argv(3));
 	file = p2.parent_path().string();
@@ -315,7 +391,10 @@ int main(int argc , char* argv[]){
 	thrdimg->FromPad(c1);
 	thrdimg->WriteImage(file.c_str());
 	
-	
+		//detecting Gradients
+	gradient(asymmety_ary, width_ary, argc-1);
+	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
+
 	t->Run();
 	
 	
