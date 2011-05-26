@@ -7,6 +7,9 @@
 //
 
 	//#define RENDER
+#ifndef _DEFINES
+#define _DEFINES
+
 
 #define LINES 5001
 
@@ -36,3 +39,5 @@ enum Level{
 	NOTICE = 1,
 	WARNING = 2
 };
+
+#endif

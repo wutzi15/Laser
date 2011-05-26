@@ -1,64 +1,11 @@
 #include "pref.h"
 #include "graph.h"
 #include "defines.h"
+#include "helper.h"
 
 
 
 
-bool check(std::string a){
-		//Check if string is a good double
-	try{
-		double d = boost::lexical_cast<double>(a);
-		(void)d;
-		return true;
-	}catch(boost::bad_lexical_cast){
-		return false;
-	}
-}
-
-double findlower(double *x,double *y, double max ){
-	for(int k = 0;k< LINES; k++){
-		if(y[k] >= max - 30){
-			return  x[k];
-			
-		}
-	}
-	return 1;
-}
-
-
-double findupper(double *x,double *y , double max){
-	for(int l = LINES-1 ;l >= 0 ; l--){
-		if(y[l]>= max -30){
-			return x[l];
-		}
-	}
-	return 1;
-}
-
-bool ispm(double num, double pm){
-	if (num >= pm+PM_OFFSET || num <=PM_OFFSET-pm) {
-		return true;
-	}
-	return false;
-}
-
-void label(TCanvas *canv, int pos, Level level){
-	if (level == WARNING) {
-		TPad *pad =(TPad*)canv->cd(pos);
-		std::string title = pad->GetTitle();
-		title += " WARNING!";
-		pad->SetTitle(title.c_str());
-		
-	}
-	if (level == NOTICE) {
-		TPad *pad =(TPad*)canv->cd(pos);
-		std::string title = pad->GetTitle();
-		title += " NOTICE!";
-		pad->SetTitle(title.c_str());
-	}
-	
-}
 
 void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv){
 	bool warning = false;
