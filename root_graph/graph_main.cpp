@@ -218,7 +218,7 @@ int main(int argc , char* argv[]){
 			}
 			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
 			asymmety_ary[i-3] = calced_asy;
-			std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
+				//std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
 			
 		}catch(std::exception e){
