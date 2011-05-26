@@ -35,6 +35,10 @@
 
 #define PM_OFFSET 100
 
+#define THRS_EXPAND -65
+
+#define RATIO_EXPAND 10
+
 enum Level{
 	NOTICE = 1,
 	WARNING = 2

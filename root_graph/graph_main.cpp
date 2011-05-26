@@ -17,15 +17,15 @@ void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv)
 		double gradient_centr2;
 		double gradient_int;
 		double gradient_int2;
-		gradient_asy = (asy[i]-asy[i+1]);
+		gradient_asy = (asy[i+1]-asy[i]);
 		if(i <= ((sizeof(asy)/sizeof(asy[0]))) -2){
 			gradient_asy2 =  (asy[i+1]-asy[i+2]);
 			gradient_int2 = (integral[i+1]-integral[i+2]);
 		}else{
 			gradient_asy2 = 0;
 		}
-		gradient_centr = (center[i]-center[i+1]);
-		gradient_int = (integral[i]-integral[i+1]);
+		gradient_centr = (center[i+1]-center[i]);
+		gradient_int = (integral[i+1]-integral[i]);
 		gradient_centr2 = (center[i+1]-center[i+2]);
 			//std::cout << "grad int: "<< gradient_int <<'\t'<< "grad asy:" << gradient_asy << '\t' << "grad centr: " << gradient_centr<< std::endl;
 		if (gradient_asy == INFINITY || gradient_asy2== INFINITY || gradient_centr == INFINITY|| gradient_centr2 == INFINITY || gradient_int == INFINITY || gradient_int2 == INFINITY) {
@@ -46,68 +46,6 @@ void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv)
 			label(canv,i,NOTICE);
 			continue;
 		}
-		
-		/*
-		if(gradient_asy2 >= WARNING_PERC_ASY && ispm(gradient_centr, WARNING_PERC_CEN) ){
-			warning=true;
-			std::cout << "\n\n WARNING!!! \n\n";
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr << std::endl;
-			label(canv,i,WARNING);
-			continue;
-		}
-		if(gradient_asy >= WARNING_PERC_ASY && ispm(gradient_centr2, WARNING_PERC_CEN) ){
-			warning=true;
-			std::cout << "\n\n WARNING!!! \n\n";
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
-			label(canv,i,WARNING);
-			continue;
-		}
-		if(gradient_asy2 >= WARNING_PERC_ASY && ispm(gradient_centr2, WARNING_PERC_CEN) ){
-			warning=true;
-			std::cout << "\n\n WARNING!!! \n\n";
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
-			label(canv,i,WARNING);
-			continue;
-		}
-			//Special Warning
-		if (gradient_asy >= WARNING_ALONE_ASY) {
-			warning = true;
-			std::cout << "\n\nWARNING!\nONLY BY ASYMMETRY\n\n";
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
-			label(canv,i,WARNING);
-			continue;
-		}
-			//Notices
-		if(gradient_asy >= NOTICE_PER_ASY && ispm(gradient_centr, NOTICE_PER_CEN)){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr << std::endl;
-			label(canv,i,NOTICE);
-			continue;
-		}
-		if(gradient_asy2 >= NOTICE_PER_ASY && ispm(gradient_centr, NOTICE_PER_CEN) ){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr << std::endl;
-			label(canv,i,NOTICE);
-			continue;
-		}
-		if(gradient_asy >= NOTICE_PER_ASY && ispm(gradient_centr2, NOTICE_PER_CEN) ){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
-			label(canv,i,NOTICE);
-			continue;
-		}
-		if(gradient_asy2 >= NOTICE_PER_ASY && ispm(gradient_centr2, NOTICE_PER_CEN) ){
-			std::cout << "Gradient detected @:"<<i << std::endl;
-			std::cout << "Asym. Grad: " << gradient_asy2 << '\t' << "Center Grad: " << gradient_centr2 << std::endl;
-			label(canv,i,NOTICE);
-			continue;
-		}*/
-		
-		
 	}
 	if (warning) {
 		TCanvas *warn = new TCanvas("Warning", "Warning", 200, 100);
@@ -234,7 +172,13 @@ int main(int argc , char* argv[]){
 			
 			std::cout << "ROOT integral: " << r_integral->Integral() << std::endl;
 			cmp_int_root[i] = r_integral->Integral();
+				
+				//expanding
+			expand(y, THRS_EXPAND, RATIO_EXPAND, LINES);
+				
+				
 				//Filling TGraph2D
+			
 			for(Int_t j = 0; j <LINES ; j++){
 					//max = (y[j] > max) ? y[j] : max;
 				if (y[j] > max){
@@ -417,6 +361,6 @@ int main(int argc , char* argv[]){
 	delete[] argc_ary; 
 	delete[] cmp_int_root;
 	delete[] asymmety_ary;
-	delete [] width_ary;
+	delete[] width_ary;
 	return 0;
 }

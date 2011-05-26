@@ -61,5 +61,19 @@ void label(TCanvas *canv, int pos, Level level){
 		title += " NOTICE!";
 		pad->SetTitle(title.c_str());
 	}
-	
 }
+
+void expand(double *y,double threshold,double ratio, int count){
+	for (int i = 0; i< count; i++) {
+		if (y[i] < threshold) {
+			y[i] -= fabs(y[i] -threshold)*ratio;
+		}
+	}
+}
+
+
+
+
+
+
+
