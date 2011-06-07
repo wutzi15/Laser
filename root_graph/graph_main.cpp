@@ -243,14 +243,14 @@ int main(int argc , char* argv[]){
 		}
 	}
 	of.close();
-	c1->Update();
+	/*c1->Update();
 	sleep(1);
 	TImage *img1 = TImage::Create();
 	img1->FromPad(c1);
 	img1->WriteImage("all.png");
 	c1->Update();
 	img1->FromPad(c1);
-	img1->WriteImage("all.png");
+	img1->WriteImage("all.png");*/
 	
 		//Setting style for 3D Plot
 	TCanvas *d = new TCanvas("big","big",10,10,1500,800);
