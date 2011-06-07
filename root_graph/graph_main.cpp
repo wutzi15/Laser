@@ -58,6 +58,27 @@ void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv)
 	
 }
 
+void read_file(std::string &line, std::vector<double> &a, std::vector<double> &b, std::vector<double> &inta, std::vector<double> &intb  ){
+	std::string first,sec;
+	std::string TR = line.c_str();
+	std::replace(TR.begin(),TR.end(),',','\t');
+	std::stringstream sstr(TR);
+	sstr >> first >> sec;
+	if(check(first) &&check(sec)){
+		double _first = boost::lexical_cast<double>(first);
+		double _sec = boost::lexical_cast<double>(sec);
+		a.push_back(_first);
+		b.push_back(_sec);
+			//cline++;
+		inta.push_back(_first);
+		_sec < -70.0 ? intb.push_back(0) : intb.push_back(_sec+70.0);
+		if ( *(intb.end() - 1) < 0) {
+			std::cout << "??? " << *(intb.end() - 1) << std::endl;
+		}
+	}
+
+}
+
 int main(int argc , char* argv[]){
 	Double_t startwl, stopwl;
 	startwl = boost::lexical_cast<double>(argv[1]);
@@ -114,7 +135,7 @@ int main(int argc , char* argv[]){
 			
 				//reading file
 			while(getline(in,line)){
-				std::string first,sec;
+				/*std::string first,sec;
 				
 				std::string TR = line.c_str();
 				std::replace(TR.begin(),TR.end(),',','\t');
@@ -131,12 +152,14 @@ int main(int argc , char* argv[]){
 					if ( *(intb.end() - 1) < 0) {
 						std::cout << "??? " << *(intb.end() - 1) << std::endl;
 					}
-				}
+				}*/
+				read_file(line, a, b, inta, intb);
+				cline++;
 			}
 			if (cline < LINES){
 				for(int i = cline ; i < LINES ; i++){
 					a.push_back(100);
-					b.push_back(-210);
+					b.push_back(-70);
 				}
 			}
 			std::cout<< "\n\n cline " << cline<< std::endl; 
@@ -171,7 +194,7 @@ int main(int argc , char* argv[]){
 			cmp_int_root[i] = r_integral->Integral();
 				
 				//expanding
-			expand(y, THRS_EXPAND, RATIO_EXPAND, LINES);
+				//expand(y, THRS_EXPAND, RATIO_EXPAND, LINES);
 				
 				
 				//Filling TGraph2D
