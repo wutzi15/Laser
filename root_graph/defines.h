@@ -17,7 +17,7 @@
 
 #define MIN -70.0
 
-#define NUM_ARGS 2
+#define NUM_ARGS 3
 
 #define WARNING_PERC_ASY 2
 

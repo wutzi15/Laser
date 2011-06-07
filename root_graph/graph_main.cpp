@@ -76,7 +76,7 @@ void read_file(std::string &line, std::vector<double> &a, std::vector<double> &b
 			std::cout << "??? " << *(intb.end() - 1) << std::endl;
 		}
 	}
-
+	
 }
 
 bool check_extensions(int count , char* files[]){
@@ -112,11 +112,17 @@ int main(int argc , char* argv[]){
 		return 1;
 	}
 	
+	if (argc < 4) {
+		std::cout << "Usage: " << argv[0] << " Startwavelength Stopwavelength keep_app_open(0/1)\n";
+		return 2;
+	}
+	
 	Double_t startwl, stopwl;
 	startwl = boost::lexical_cast<double>(argv[1]);
 	stopwl = boost::lexical_cast<double>(argv[2]);
+	int run = boost::lexical_cast<int>(argv[3]);
 	std::cout << startwl << '\t' << stopwl << std::endl;
-
+	
 	Double_t max = -210;
 	Double_t maxwl = 0;
 	int _argc = argc;
@@ -134,7 +140,7 @@ int main(int argc , char* argv[]){
 	std::ofstream of;
 	std::ofstream integral_of;
 	integral_of.open("integral.txt");
-
+	
 	TGraph2D *gr = new TGraph2D(LINES*(argc-1));
 		//Setting up canvas for plot of all sectrums (is it called spectrums? ;) )
 	TCanvas *c1 = new TCanvas("All Plots","All Plots",10,10,3000,1500);
@@ -191,11 +197,11 @@ int main(int argc , char* argv[]){
 				_intb[j]= (intb[j] < 0)? 0:intb[j];
 				of << x[j]<<'\t' << y[j]<<'\t' <<  '\n';
 			}
-		
-
+			
+			
 			
 			double s_integral = 0;
-		
+			
 			std::cout <<"size of int " <<  intb.size()<< std::endl;
 			for (size_t it = 0; it < intb.size() - 1; it++){
 				double y_val = (intb[it]+intb[it+1])/2;
@@ -220,8 +226,8 @@ int main(int argc , char* argv[]){
 			
 				//expanding
 				//expand(y, THRS_EXPAND, RATIO_EXPAND, LINES);
-				
-				
+			
+			
 				//Filling TGraph2D
 			
 			for(Int_t j = 0; j <LINES ; j++){
@@ -231,7 +237,7 @@ int main(int argc , char* argv[]){
 				}
 				gr->SetPoint(j+i*LINES, x[j],i,y[j]);
 			}
-	
+			
 			
 			in.seekg(0, std::ios::beg);
 			in.close();
@@ -247,7 +253,7 @@ int main(int argc , char* argv[]){
 			for (Int_t k =0 ; k < hist->GetNbinsX();k++){
 				integral += hist->GetBinContent(k);
 			}
-		
+			
 			_gr->Draw("AP");
 			_gr->GetYaxis()->SetRangeUser(-80.,-10.);
 			_gr->GetXaxis()->SetRangeUser(startwl,stopwl);
@@ -275,7 +281,7 @@ int main(int argc , char* argv[]){
 		}
 	}
 	of.close();
-
+	
 	
 		//Setting style for 3D Plot
 	TCanvas *d = new TCanvas("big","big",10,10,1500,800);
@@ -342,7 +348,7 @@ int main(int argc , char* argv[]){
 	d->Print("3d.gif++");
 #endif
 	
-
+	
 		//Saving image
 	TImage *img = TImage::Create();
 	boost::filesystem::path p(t->Argv(3));
@@ -390,8 +396,9 @@ int main(int argc , char* argv[]){
 		//detecting Gradients
 	gradient(asymmety_ary, width_ary,cmp_int, argc-1,c1);
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
-	
-	t->Run();
+	if (run == 1){
+		t->Run();
+	}
 	
 	
 	delete[] cmp_int;
