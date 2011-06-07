@@ -215,7 +215,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = 4.2;
 				LIBRARY_SEARCH_PATHS = /Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib;
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
 					"$(OTHER_CFLAGS)",
@@ -229,6 +229,7 @@
 					"-L/Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib/",
 					"-lboost_filesystem",
 					"-lboost_system",
+					"-lboost_program_options",
 					"-L/Users/wutzis_spam/root/root/lib",
 					"-lGpad",
 					"-lHist",
@@ -263,7 +264,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = 4.2;
 				LIBRARY_SEARCH_PATHS = /Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib;
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
 					"$(OTHER_CFLAGS)",
@@ -277,6 +278,7 @@
 					"-L/Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib/",
 					"-lboost_filesystem",
 					"-lboost_system",
+					"-lboost_program_options",
 					"-L/Users/wutzis_spam/root/root/lib",
 					"-lGpad",
 					"-lHist",

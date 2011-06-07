@@ -2,7 +2,7 @@
 #include "graph.h"
 #include "defines.h"
 #include "helper.h"
-
+int NUM_ARGS = 0;
 
 
 
@@ -98,7 +98,7 @@ bool check_extensions(int count , char* files[]){
 			filetype_ok = true;
 		}
 		if (!filetype_ok) {
-			std::cerr << "Filetype? " << extension <<'\t'<< ".txt"<< std::endl;
+			std::cerr << "Filetype? " << files[i]<<'\t'<<i <<  '\t' << NUM_ARGS <<  std::endl;
 			return false;
 		}
 	}
@@ -108,19 +108,53 @@ bool check_extensions(int count , char* files[]){
 
 int main(int argc , char* argv[]){
 		//checking filetypes
-	if (!check_extensions(argc, argv)) {
-		return 1;
+	
+
+	po::options_description desc("Allowed Options");
+	desc.add_options()
+		("help", "produce help message")
+		 ("startwl,s",po::value<double>(),"Set the start Wavelength for the Analysis")
+		 ("stopwl,p",po::value<double>(),"Set the stop Wavelength for the Analysis")
+		 ("ni,n","Runs the program in Noninteractive mode")
+	;
+		 
+	po::variables_map vm;
+		 po::store(po::parse_command_line(argc,argv,desc),vm);
+		 po::notify(vm);
+	if (vm.count("help")) {
+		std::cout << desc<< std::endl;
+		return 3;
 	}
 	
 	if (argc < 4) {
 		std::cout << "Usage: " << argv[0] << " Startwavelength Stopwavelength keep_app_open(0/1)\n";
 		return 2;
+	}	
+	double startwl, stopwl;
+	startwl = 842.;
+	stopwl = 860.;
+	bool run = true;
+		//startwl = boost::lexical_cast<double>(argv[1]);
+		//stopwl = boost::lexical_cast<double>(argv[2]);
+		//int run = boost::lexical_cast<int>(argv[3]);
+	if (vm.count("startwl")) {
+		startwl = vm["startwl"].as<double>();
+		NUM_ARGS +=2;
+		std::cout << "in strt wl\t" << vm["startwl"].as<double>() << std::endl;
 	}
-	
-	Double_t startwl, stopwl;
-	startwl = boost::lexical_cast<double>(argv[1]);
-	stopwl = boost::lexical_cast<double>(argv[2]);
-	int run = boost::lexical_cast<int>(argv[3]);
+	if (vm.count("stopwl")) {
+		double tmp =  vm["stopwl"].as<double>();
+		stopwl =tmp;
+		NUM_ARGS +=2;
+		std::cout << "in stp wl\t" << vm["stopwl"].as<double>()<<'\t' << stopwl << tmp << std::endl;
+	}
+	if (vm.count("ni")) {
+		run = false;
+		NUM_ARGS++;
+	}
+	if (!check_extensions(argc, argv)) {
+		return 1;
+	}
 	std::cout << startwl << '\t' << stopwl << std::endl;
 	
 	Double_t max = -210;

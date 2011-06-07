@@ -38,6 +38,7 @@
 #include "TText.h"
 #include <cmath>
 #include <time.h>
-
+#include "boost/program_options.hpp"
+namespace po = boost::program_options;
 
 #endif	

@@ -1,6 +1,6 @@
 CC	= icc
 CFLAGS	=    -fast #-DNDEBUG  
-LDFLAGS	= -lSpectrum   -L/Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib/  -lboost_filesystem -lboost_system # -lboost_program_options -lboost_thread 
+LDFLAGS	= -lSpectrum   -L/Users/wutzis_spam/Downloads/boost_1_46_1/stage/lib/  -lboost_filesystem -lboost_system -lboost_program_options # -lboost_program_options -lboost_thread 
 OBJ	= graph.C graph_main.cpp
 #OBJ	= parser.cpp /Users/wutzis_spam/Downloads/boost_1_46_0/stage/lib/libboost_program_options.a /Users/wutzis_spam/Downloads/boost_1_46_0/stage/lib/libboost_thread.a
 OPTFL	=  #-fast  -parallel -par-report1 -restrict -override_limits
