@@ -39,6 +39,12 @@
 
 #define RATIO_EXPAND 10
 
+#define _VERSION "1.0"
+
+#define _ROOT_VERSION "5.30rc1"
+
+#define _BOOST_VERSION "1.46.1"
+
 enum Level{
 	NOTICE = 1,
 	WARNING = 2

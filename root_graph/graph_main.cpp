@@ -107,8 +107,8 @@ bool check_extensions(int count , char* files[]){
 }
 
 int main(int argc , char* argv[]){
-		//checking filetypes
-	
+		
+		//Program Options
 
 	po::options_description desc("Allowed Options");
 	desc.add_options()
@@ -116,6 +116,7 @@ int main(int argc , char* argv[]){
 		 ("startwl,s",po::value<double>(),"Set the start Wavelength for the Analysis")
 		 ("stopwl,p",po::value<double>(),"Set the stop Wavelength for the Analysis")
 		 ("ni,n","Runs the program in Noninteractive mode")
+		("version,v","Prints Version")
 	;
 		 
 	po::variables_map vm;
@@ -125,33 +126,36 @@ int main(int argc , char* argv[]){
 		std::cout << desc<< std::endl;
 		return 3;
 	}
+	if (vm.count("version")) {
+		std::cout << "VCSEL Laser Analysis Version " << _VERSION << std::endl;
+		std::cout << "Using ROOT version " << _ROOT_VERSION << " and Boost version " << _BOOST_VERSION << std::endl;
+		return 0;
+	}
 	
 	if (argc < 4) {
-		std::cout << "Usage: " << argv[0] << " Startwavelength Stopwavelength keep_app_open(0/1)\n";
+		std::cout << "Usage: " << argv[0] << " --help for more information \n";
 		return 2;
 	}	
 	double startwl, stopwl;
 	startwl = 842.;
 	stopwl = 860.;
 	bool run = true;
-		//startwl = boost::lexical_cast<double>(argv[1]);
-		//stopwl = boost::lexical_cast<double>(argv[2]);
-		//int run = boost::lexical_cast<int>(argv[3]);
 	if (vm.count("startwl")) {
 		startwl = vm["startwl"].as<double>();
 		NUM_ARGS +=2;
-		std::cout << "in strt wl\t" << vm["startwl"].as<double>() << std::endl;
 	}
 	if (vm.count("stopwl")) {
 		double tmp =  vm["stopwl"].as<double>();
 		stopwl =tmp;
 		NUM_ARGS +=2;
-		std::cout << "in stp wl\t" << vm["stopwl"].as<double>()<<'\t' << stopwl << tmp << std::endl;
 	}
 	if (vm.count("ni")) {
 		run = false;
 		NUM_ARGS++;
 	}
+	
+	
+	//checking filetypes must be txt, csv or CSV
 	if (!check_extensions(argc, argv)) {
 		return 1;
 	}
