@@ -79,7 +79,38 @@ void read_file(std::string &line, std::vector<double> &a, std::vector<double> &b
 
 }
 
+bool check_extensions(int count , char* files[]){
+	for (int i = NUM_ARGS +1; i < count ; i++){
+		std::string tmp = files[i];
+		boost::filesystem::path error_path(tmp);
+		std::string extension = error_path.extension().c_str();
+		int txt = extension.compare(".txt");
+		int csv = extension.compare(".csv");
+		int CSV = extension.compare(".CSV");
+		bool filetype_ok = false;
+		if (!txt) {
+			filetype_ok = true;
+		}
+		if (!csv) {
+			filetype_ok = true;
+		}
+		if (!CSV) {
+			filetype_ok = true;
+		}
+		if (!filetype_ok) {
+			std::cerr << "Filetype? " << extension <<'\t'<< ".txt"<< std::endl;
+			return false;
+		}
+	}
+	return true;
+	
+}
+
 int main(int argc , char* argv[]){
+		//checking filetypes
+	if (!check_extensions(argc, argv)) {
+		return 1;
+	}
 	
 	Double_t startwl, stopwl;
 	startwl = boost::lexical_cast<double>(argv[1]);
@@ -131,6 +162,7 @@ int main(int argc , char* argv[]){
 			char **arg1 = t->Argv() ;
 			std::string tmp = arg1[i];
 			in.open(tmp.c_str());
+			
 			std::cout<< "file: " << tmp << std::endl;
 			std::string line;
 			int cline = 0;
@@ -235,7 +267,7 @@ int main(int argc , char* argv[]){
 			}
 			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
 			asymmety_ary[i-3] = calced_asy;
-				//std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
+			
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
 			
 		}catch(std::exception e){
@@ -243,14 +275,7 @@ int main(int argc , char* argv[]){
 		}
 	}
 	of.close();
-	/*c1->Update();
-	sleep(1);
-	TImage *img1 = TImage::Create();
-	img1->FromPad(c1);
-	img1->WriteImage("all.png");
-	c1->Update();
-	img1->FromPad(c1);
-	img1->WriteImage("all.png");*/
+
 	
 		//Setting style for 3D Plot
 	TCanvas *d = new TCanvas("big","big",10,10,1500,800);
@@ -322,7 +347,7 @@ int main(int argc , char* argv[]){
 	TImage *img = TImage::Create();
 	boost::filesystem::path p(t->Argv(3));
 	std::string file = p.parent_path().string();
-	file += "big.png";
+	file += "_big.png";
 	img->FromPad(d);
 	img->WriteImage(file.c_str());
 		//cleaning
@@ -351,14 +376,14 @@ int main(int argc , char* argv[]){
 	TImage *secimg = TImage::Create();
 	boost::filesystem::path p2(t->Argv(3));
 	file = p2.parent_path().string();
-	file += "asy_cent.png";
+	file += "_asy_cent.png";
 	secimg->FromPad(e);
 	secimg->WriteImage(file.c_str());
 	
 	TImage *thrdimg = TImage::Create();
 	boost::filesystem::path p3(t->Argv(3));
 	file = p3.parent_path().string();
-	file += "allplots.png";
+	file += "_allplots.png";
 	thrdimg->FromPad(c1);
 	thrdimg->WriteImage(file.c_str());
 	
