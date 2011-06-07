@@ -80,7 +80,7 @@ void read_file(std::string &line, std::vector<double> &a, std::vector<double> &b
 }
 
 int main(int argc , char* argv[]){
-	clock_t start, end;
+	
 	Double_t startwl, stopwl;
 	startwl = boost::lexical_cast<double>(argv[1]);
 	stopwl = boost::lexical_cast<double>(argv[2]);
@@ -103,8 +103,7 @@ int main(int argc , char* argv[]){
 	std::ofstream of;
 	std::ofstream integral_of;
 	integral_of.open("integral.txt");
-	std::ofstream timestream;
-	timestream.open("timing.txt");
+
 	TGraph2D *gr = new TGraph2D(LINES*(argc-1));
 		//Setting up canvas for plot of all sectrums (is it called spectrums? ;) )
 	TCanvas *c1 = new TCanvas("All Plots","All Plots",10,10,3000,1500);
@@ -121,7 +120,7 @@ int main(int argc , char* argv[]){
 	of.open("tmp.dat");
 	for (Int_t i = NUM_ARGS +1; i < argc ; i++){
 		try{ 
-			start = clock();
+			
 			max = -210;
 			maxwl = 0;
 			argc_ary[i] = i-NUM_ARGS;
@@ -136,18 +135,14 @@ int main(int argc , char* argv[]){
 			std::string line;
 			int cline = 0;
 			std::vector<double> a,b, inta, intb;
-			end= clock();
-			timestream << "init:,\t";
-			timestream << end-start << std::endl;
+			
 				//reading file
-			start = clock();
+			
 			while(getline(in,line)){
 				read_file(line, a, b, inta, intb);
 				cline++;
 			}
-			end = clock();
-			timestream << "read file:,\t";
-			timestream << end-start <<  std::endl;
+			
 			if (cline < LINES){
 				for(int i = cline ; i < LINES ; i++){
 					a.push_back(100);
@@ -156,7 +151,7 @@ int main(int argc , char* argv[]){
 			}
 			std::cout<< "\n\n cline " << cline<< std::endl; 
 			cline =(cline > LINES) ? LINES :cline;
-			start = clock();
+			
 			for(Int_t j = 0; j <LINES ;j++){
 				x[j] = a[j];
 				y[j] = b[j];
@@ -164,13 +159,11 @@ int main(int argc , char* argv[]){
 				_intb[j]= (intb[j] < 0)? 0:intb[j];
 				of << x[j]<<'\t' << y[j]<<'\t' <<  '\n';
 			}
-			end= clock();
-			timestream << "copy arrays:,\t";
-			timestream << end-start << std::endl;
+		
 
 			
 			double s_integral = 0;
-			start= clock();
+		
 			std::cout <<"size of int " <<  intb.size()<< std::endl;
 			for (size_t it = 0; it < intb.size() - 1; it++){
 				double y_val = (intb[it]+intb[it+1])/2;
@@ -179,11 +172,10 @@ int main(int argc , char* argv[]){
 				if(area > 0 )
 					s_integral += area;
 			}
-			end= clock();
-			timestream << "My Integral:,\t";
-			timestream << end-start << std::endl;
 			
-			start = clock();
+			
+			
+			
 			std::cout << "Simpson integral: " <<s_integral <<std::endl;
 			integral_of << i << '\t' << s_integral << std::endl;
 			integral_hist->Fill(s_integral);
@@ -193,15 +185,13 @@ int main(int argc , char* argv[]){
 			
 			std::cout << "ROOT integral: " << r_integral->Integral() << std::endl;
 			cmp_int_root[i] = r_integral->Integral();
-			end= clock();
-			timestream << "ROOT integral:,\t";
-			timestream << end-start << std::endl;	
+			
 				//expanding
 				//expand(y, THRS_EXPAND, RATIO_EXPAND, LINES);
 				
 				
 				//Filling TGraph2D
-			start = clock();
+			
 			for(Int_t j = 0; j <LINES ; j++){
 				if (y[j] > max){
 					max = y[j];
@@ -209,15 +199,13 @@ int main(int argc , char* argv[]){
 				}
 				gr->SetPoint(j+i*LINES, x[j],i,y[j]);
 			}
-			end= clock();
-			timestream << "Filling Graph:,\t";
-			timestream << end-start << std::endl;
+	
 			
 			in.seekg(0, std::ios::beg);
 			in.close();
 			
 				//Plotting each spectrum
-			start = clock();
+			
 			TGraph *_gr = new TGraph(LINES,x,y);
 			_gr->GetHistogram()->GetXaxis()->SetTitle("#lambda in nm");
 			_gr->GetHistogram()->GetYaxis()->SetTitle("Intensity in dB");
@@ -227,20 +215,15 @@ int main(int argc , char* argv[]){
 			for (Int_t k =0 ; k < hist->GetNbinsX();k++){
 				integral += hist->GetBinContent(k);
 			}
+		
 			_gr->Draw("AP");
 			_gr->GetYaxis()->SetRangeUser(-80.,-10.);
 			_gr->GetXaxis()->SetRangeUser(startwl,stopwl);
 			_gr->SetTitle(tmp.c_str());
 			c1->Update();
-			TImage *img = TImage::Create();
-			img->FromPad(c1);
-			img->WriteImage("all.png");
-			end= clock();
-			timestream << "Plotting:,\t";
-			timestream << end-start << std::endl;
+			
 			
 				//Calculating asymmetry
-			start = clock();
 			std::cout << "maximum: " << max << std::endl;
 			double leftlimit, rightlimit = 1;
 			leftlimit = findlower(x,y, max);
@@ -254,14 +237,21 @@ int main(int argc , char* argv[]){
 			asymmety_ary[i-3] = calced_asy;
 				//std::string asy_text = boost::lexical_cast<std::string>(calced_asy);
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
-			end= clock();
-			timestream << "Asymmetry:,\t";
-			timestream << end-start << std::endl;
+			
 		}catch(std::exception e){
 			std::cout << e.what()<< std::endl;
 		}
 	}
 	of.close();
+	c1->Update();
+	sleep(1);
+	TImage *img1 = TImage::Create();
+	img1->FromPad(c1);
+	img1->WriteImage("all.png");
+	c1->Update();
+	img1->FromPad(c1);
+	img1->WriteImage("all.png");
+	
 		//Setting style for 3D Plot
 	TCanvas *d = new TCanvas("big","big",10,10,1500,800);
 	d->Divide(2,2);
