@@ -112,11 +112,11 @@ int main(int argc , char* argv[]){
 
 	po::options_description desc("Allowed Options");
 	desc.add_options()
-		("help", "produce help message")
+		 ("help,h", "Produce this help message")
 		 ("startwl,s",po::value<double>(),"Set the start Wavelength for the Analysis")
 		 ("stopwl,p",po::value<double>(),"Set the stop Wavelength for the Analysis")
-		 ("ni,n","Runs the program in Noninteractive mode")
-		("version,v","Prints Version")
+		 ("non-interactive,n","Runs the program in Noninteractive mode. It quits when it's finished")
+		 ("version,v","Prints Version")
 	;
 		 
 	po::variables_map vm;
@@ -159,13 +159,13 @@ int main(int argc , char* argv[]){
 	if (!check_extensions(argc, argv)) {
 		return 1;
 	}
-	std::cout << startwl << '\t' << stopwl << std::endl;
+	std::cout <<"startwl: "<< startwl << '\t' << "stopwl: " << stopwl << std::endl;
 	
 	Double_t max = -210;
 	Double_t maxwl = 0;
 	int _argc = argc;
 	TApplication *t = new TApplication("big",&_argc,argv);
-	std::cout << "Running with boost" <<std::endl;
+	std::cout << "Running with boost and ROOT" <<std::endl;
 	std::vector<double> _x,_y;
 	Double_t x[LINES], y[LINES], _inta[LINES], _intb[LINES]; 
 	
@@ -175,16 +175,14 @@ int main(int argc , char* argv[]){
 	Double_t *asymmety_ary = new Double_t[argc];
 	Double_t *width_ary = new Double_t [argc];
 	
-	std::ofstream of;
-	std::ofstream integral_of;
-	integral_of.open("integral.txt");
+
 	
 	TGraph2D *gr = new TGraph2D(LINES*(argc-1));
 		//Setting up canvas for plot of all sectrums (is it called spectrums? ;) )
 	TCanvas *c1 = new TCanvas("All Plots","All Plots",10,10,3000,1500);
 	TH1F *integral_hist = new TH1F("Asymmerty", "Asymmetry", 100,0, 100);
 	
-	std::cout << argc%ROWS<< std::endl;
+
 	if(!(argc % ROWS)){
 		c1->Divide(argc/ROWS,ROWS);
 		
@@ -192,7 +190,6 @@ int main(int argc , char* argv[]){
 		c1->Divide(argc/ROWS+(argc %ROWS -1),ROWS);
 	}
 	
-	of.open("tmp.dat");
 	for (Int_t i = NUM_ARGS +1; i < argc ; i++){
 		try{ 
 			
@@ -225,7 +222,7 @@ int main(int argc , char* argv[]){
 					b.push_back(-70);
 				}
 			}
-			std::cout<< "\n\n cline " << cline<< std::endl; 
+			std::cout<< "\n\ncline: " << cline<< std::endl; 
 			cline =(cline > LINES) ? LINES :cline;
 			
 			for(Int_t j = 0; j <LINES ;j++){
@@ -233,7 +230,6 @@ int main(int argc , char* argv[]){
 				y[j] = b[j];
 				_inta[j] = inta[j];
 				_intb[j]= (intb[j] < 0)? 0:intb[j];
-				of << x[j]<<'\t' << y[j]<<'\t' <<  '\n';
 			}
 			
 			
@@ -253,7 +249,6 @@ int main(int argc , char* argv[]){
 			
 			
 			std::cout << "Simpson integral: " <<s_integral <<std::endl;
-			integral_of << i << '\t' << s_integral << std::endl;
 			integral_hist->Fill(s_integral);
 			cmp_int[i] = s_integral;
 			Int_t lines = (Int_t)intb.size();
@@ -286,12 +281,6 @@ int main(int argc , char* argv[]){
 			_gr->GetHistogram()->GetXaxis()->SetTitle("#lambda in nm");
 			_gr->GetHistogram()->GetYaxis()->SetTitle("Intensity in dB");
 			c1->cd(i-NUM_ARGS);
-			Double_t integral = 0;
-			TH1F* hist = _gr->GetHistogram();
-			for (Int_t k =0 ; k < hist->GetNbinsX();k++){
-				integral += hist->GetBinContent(k);
-			}
-			
 			_gr->Draw("AP");
 			_gr->GetYaxis()->SetRangeUser(-80.,-10.);
 			_gr->GetXaxis()->SetRangeUser(startwl,stopwl);
@@ -310,7 +299,7 @@ int main(int argc , char* argv[]){
 				width_ary[i] = maxwl;
 			}
 			double calced_asy = (maxwl-leftlimit)/(rightlimit-maxwl);
-			asymmety_ary[i-3] = calced_asy;
+			asymmety_ary[i-NUM_ARGS] = calced_asy;
 			
 			std::cout << "Asymmetry: " << calced_asy << std::endl;
 			
@@ -318,7 +307,6 @@ int main(int argc , char* argv[]){
 			std::cout << e.what()<< std::endl;
 		}
 	}
-	of.close();
 	
 	
 		//Setting style for 3D Plot
@@ -343,7 +331,7 @@ int main(int argc , char* argv[]){
 	d->Update();
 	d->cd(4);
 	d->Update();
-	gROOT->SetStyle("modern");
+		//gROOT->SetStyle("modern");
 	gr->SetTitle("big");
 	gr->GetHistogram("empty")->GetXaxis()->SetTitle("#lambda in nm");
 	gr->GetHistogram("empty")->GetXaxis()->SetLimits(startwl,stopwl);
@@ -395,7 +383,7 @@ int main(int argc , char* argv[]){
 	img->FromPad(d);
 	img->WriteImage(file.c_str());
 		//cleaning
-	boost::filesystem::remove(boost::filesystem::path("tmp.dat"));
+	
 	TCanvas *e = new TCanvas("Asymmetry","Asymmetry",10,10,1500,800);
 	e->Divide(2,1);
 	TGraph *asy_plot = new TGraph(argc-1, argc_ary, asymmety_ary);
