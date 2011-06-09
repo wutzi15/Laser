@@ -133,7 +133,7 @@ int main(int argc , char* argv[]){
 	}
 	
 	if (argc < 4) {
-		std::cout << "Usage: " << argv[0] << " --help for more information \n";
+		std::cout << desc;
 		return 2;
 	}	
 	double startwl, stopwl;
@@ -149,7 +149,7 @@ int main(int argc , char* argv[]){
 		stopwl =tmp;
 		NUM_ARGS +=2;
 	}
-	if (vm.count("ni")) {
+	if (vm.count("non-interactive")) {
 		run = false;
 		NUM_ARGS++;
 	}
@@ -320,8 +320,11 @@ int main(int argc , char* argv[]){
 	d->cd(2);
 	std::cout << "Fitting\n\n";
 	integral_hist->SetFillColor(kBlue);
+	gStyle->SetOptStat(1211);
+	gStyle->SetOptFit(1111);
 	integral_hist->Draw();
-	integral_hist->Fit("gaus");
+	TFitResultPtr fit_result_ptr =  integral_hist->Fit("gaus","W","" ,10,100);
+	integral_hist->Draw("SAME");
 	d->Update();
 	d->cd(3);
 	
@@ -422,7 +425,8 @@ int main(int argc , char* argv[]){
 		//detecting Gradients
 	gradient(asymmety_ary, width_ary,cmp_int, argc-1,c1);
 	std::cout << "\n\n\nDone !!\nYou can quit now using CTRL+C \n" ;
-	if (run == 1){
+	
+	if (run == true){
 		t->Run();
 	}
 	

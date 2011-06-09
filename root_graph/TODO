@@ -1,2 +1,3 @@
-- Add fit range for asymmetry hist fit.
+- Add fit range for asymmetry hist fit. (fixed)
 - Check why asymmetry graph doesn't include all files 
+- Print Fitresults in Hist (fixed)
