@@ -45,6 +45,10 @@
 
 #define _BOOST_VERSION "1.46.1"
 
+#ifndef INFINITY
+#define INFINITY 10000
+#endif
+
 enum Level{
 	NOTICE = 1,
 	WARNING = 2

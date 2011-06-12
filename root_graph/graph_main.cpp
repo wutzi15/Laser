@@ -10,7 +10,7 @@ int NUM_ARGS = 0;
 void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv){
 	bool warning = false;
 	for(int i = 0; i < n -2; i++){
-		
+			//foo
 		double gradient_asy;
 		double gradient_asy2;
 		double gradient_centr ;
@@ -320,11 +320,12 @@ int main(int argc , char* argv[]){
 	d->cd(2);
 	std::cout << "Fitting\n\n";
 	integral_hist->SetFillColor(kBlue);
+		//settig everything to print fitresuts
 	gStyle->SetOptStat(1211);
 	gStyle->SetOptFit(1111);
 	integral_hist->Draw();
-	TFitResultPtr fit_result_ptr =  integral_hist->Fit("gaus","W","" ,10,100);
-	integral_hist->Draw("SAME");
+	integral_hist->Fit("gaus","W","" ,10,100);
+		//integral_hist->Draw("SAME");
 	d->Update();
 	d->cd(3);
 	

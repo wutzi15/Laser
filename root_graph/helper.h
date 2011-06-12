@@ -12,7 +12,7 @@
 bool check(std::string a);
 double findlower(double *x,double *y, double max );
 double findupper(double *x,double *y , double max);
-bool ispm(double num, double pm);
+inline bool ispm(double num, double pm);
 void label(TCanvas *canv, int pos, Level level);
 void expand(double *y,double threshold,double ratio,int count);
 

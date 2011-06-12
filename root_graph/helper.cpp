@@ -40,7 +40,7 @@ double findupper(double *x,double *y , double max){
 	return 1;
 }
 
-bool ispm(double num, double pm){
+inline bool ispm(double num, double pm){
 	if (num >= pm+PM_OFFSET || num <=PM_OFFSET-pm) {
 		return true;
 	}

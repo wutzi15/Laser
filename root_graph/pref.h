@@ -5,6 +5,9 @@
 //  Created by Wutzi on 13.05.11.
 //  Copyright 2011 me. All rights reserved.
 //
+#ifndef _PREF
+#define _PREF
+
 #include "TApplication.h"
 #include "TH1F.h"
 #include "TH2F.h"
@@ -32,3 +35,10 @@
 #include <iostream>
 #include <sstream>
 #include "TStyle.h"
+#include "TText.h"
+#include <cmath>
+#include <time.h>
+#include "boost/program_options.hpp"
+namespace po = boost::program_options;
+
+#endif	

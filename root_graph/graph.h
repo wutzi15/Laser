@@ -6,7 +6,7 @@
 	//#include "boost/filesystem.hpp"
 
 void graph(std::string name,bool big);
-void init();
+inline void init();
 void AtlasStyle();
 
 
