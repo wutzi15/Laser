@@ -2,3 +2,8 @@
 - Check why asymmetry graph doesn't include all files 
 - Print Fitresults in Hist (fixed)
 - Remove overlay Bug in big.png
+
+
+############## OPTIMIZATIONS #####################
+
+-Lexical casts are slow as are stringstreams !

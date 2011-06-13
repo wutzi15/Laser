@@ -8,6 +8,7 @@ int NUM_ARGS = 0;
 
 
 void gradient(double *asy, double *center,double *integral, int n,TCanvas *canv){
+
 	bool warning = false;
 	for(int i = 0; i < n -2; i++){
 			//foo
@@ -193,7 +194,7 @@ int main(int argc , char* argv[]){
 	for (Int_t i = NUM_ARGS +1; i < argc ; i++){
 		try{ 
 			
-			max = -210;
+			max = -211;
 			maxwl = 0;
 			argc_ary[i] = i-NUM_ARGS;
 			
@@ -430,7 +431,7 @@ int main(int argc , char* argv[]){
 	if (run == true){
 		t->Run();
 	}
-	
+	std::cout << "With \n" ;
 	
 	delete[] cmp_int;
 	delete[] argc_ary; 
